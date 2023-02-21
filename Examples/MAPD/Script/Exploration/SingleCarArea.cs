@@ -144,4 +144,16 @@ public class SingleCarArea : MonoBehaviour
         }
         return Math.Abs(index_x - index_y);
     }
+
+    public float CalcuGraphFlag(Vector3 x, Vector3 y)
+    {
+        if (x == y)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
 }

@@ -7,7 +7,7 @@ using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 using UnityStandardAssets.Vehicles.Car;
 using MBaske.MLUtil;
-using MBaske.Sensors.Grid;
+// using MBaske.Sensors.Grid;
 
 
 public class SingleCarAgent : Agent
@@ -20,7 +20,7 @@ public class SingleCarAgent : Agent
     private const int RayNum=18;
     private Vector3 GraphFlag;
     private Vector3 GoalFlag;
-    private float E_metric;
+    private float E_metric, D_metric;
     
     public override void Initialize()
     {
@@ -34,10 +34,10 @@ public class SingleCarAgent : Agent
         // sensor.AddObservation(m_Car.NormSteer);
         // sensor.AddObservation(Normalization.Sigmoid(m_Car.LocalSpin));
         // sensor.AddObservation(Normalization.Sigmoid(m_Car.LocalVelocity));
-        // sensor.AddObservation(m_Car.transform.position);
-        // sensor.AddObservation(Goal.transform.position);
-        sensor.AddObservation(GraphFlag);
-        sensor.AddObservation(GoalFlag);
+        sensor.AddObservation(m_Car.transform.position);
+        sensor.AddObservation(Goal.transform.position);
+        // sensor.AddObservation(GraphFlag);
+        // sensor.AddObservation(GoalFlag);
     }
 
     public override void OnEpisodeBegin()
@@ -48,7 +48,7 @@ public class SingleCarAgent : Agent
 
         t_dist = (m_Car.transform.position - Goal.transform.position).magnitude;
         p_dist = (m_Car.transform.position - Goal.transform.position).magnitude;
-        GraphFlag = new Vector3(1, 0, 0);
+        GraphFlag = new Vector3(0, 1, 0);
         GoalFlag = m_MyArea.GetGoalGraph();
     }
 
@@ -59,13 +59,14 @@ public class SingleCarAgent : Agent
         m_Car.Move(actions[0], actions[1]*500, actions[1], actions[2]); 
         GraphFlag = m_MyArea.GetAgentGraph();
         E_metric = m_MyArea.CalcuMetric(GoalFlag, GraphFlag);
+        D_metric = t_dist / p_dist;
         
-        AddReward(- t_dist / p_dist);
-        AddReward(-1 * E_metric);
+        AddReward(-10 * D_metric);
+        AddReward(-10 * E_metric);
 
         // Debug.Log(E_metric);
-        // Debug.Log(GoalFlag);
-        Debug.Log(- t_dist / p_dist);
+        // Debug.Log(GraphFlag);
+        // Debug.Log(- t_dist / p_dist);
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -85,7 +86,7 @@ public class SingleCarAgent : Agent
         if (t_distance < 5)
         {
             Debug.Log("success");
-            AddReward(10000);
+            AddReward(5000);
             EndEpisode();
         }
 
@@ -107,8 +108,8 @@ public class SingleCarAgent : Agent
             if (Physics.Raycast(RayPos, forward, 3f))
             {
                 Debug.Log("collision");
-                AddReward(-10000);
-                EndEpisode();
+                AddReward(-20);
+                // EndEpisode();
             }
         }
     }
