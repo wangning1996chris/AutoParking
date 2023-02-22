@@ -153,7 +153,7 @@ public class CarAgent : Agent
         if (t_distance < 1.8 && speed < 0.5 && angle < 8)
         {
             Debug.Log("success");
-            AddReward(1000);
+            AddReward(2000);
             EndEpisode();
         }
 
