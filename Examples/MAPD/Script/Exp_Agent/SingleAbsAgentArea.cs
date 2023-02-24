@@ -18,42 +18,38 @@ public class SingleAbsAgentArea : MonoBehaviour
     public SingleAbsAgent m_Agent;
     private Rigidbody m_AgentRb;
     private List<(int, int)> PosDeltaList;
-    private Vector3 GoalFlag;
+    private float[] GoalFlag, AgentFlag;
+    private GraphMatrixStructure GrapghInfo;
+    private int g_index, a_index;
 
     void Start()
     {
         m_AgentRb = m_Agent.GetComponent<Rigidbody>();
         PosDeltaList = new List<(int x, int y)> {(45, 25), (-45, 25), (-45, -25), (45, -25)};
+        GrapghInfo = new GraphMatrixStructure();
+        g_index = -1;
+        a_index = -1;
     }
 
     public void ResetObject()
     {
-        int index;
         float xRange, zRange;
-        var enumerable = Enumerable.Range(0, 9).OrderBy(x => Guid.NewGuid()).Take(2);
+        var enumerable = Enumerable.Range(0, 4).OrderBy(x => Guid.NewGuid()).Take(2);
         var items = enumerable.ToArray();
         // Reset Goal
-        index = items[0];
-        var g_spawnTransform = AreaList[index].transform;
+        g_index = items[0];
+        var g_spawnTransform = AreaList[g_index].transform;
         xRange = g_spawnTransform.localScale.x / 3.5f;
         zRange = g_spawnTransform.localScale.z / 3.5f;
 
         m_Goal.transform.position = new Vector3(Random.Range(-xRange, xRange), 1f, Random.Range(-zRange, zRange))
             + g_spawnTransform.position;
         
-
-        if (index == 0)
-        {
-            GoalFlag = new Vector3(1, 0, 0);
-        }
-        else
-        {
-            GoalFlag = new Vector3(0, 0, 1);
-        }
+        GoalFlag = GrapghInfo.GetEncoder(g_index);
 
         // Reset Agent
-        index = items[1];
-        var a_spawnTransform = AreaList[index].transform;
+        a_index = items[1];
+        var a_spawnTransform = AreaList[a_index].transform;
         xRange = a_spawnTransform.localScale.x / 3.5f;
         zRange = a_spawnTransform.localScale.z / 3.5f;
 
@@ -62,6 +58,8 @@ public class SingleAbsAgentArea : MonoBehaviour
         m_AgentRb.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f));
         m_AgentRb.velocity = Vector3.zero;
         m_AgentRb.angularVelocity = Vector3.zero;
+
+        AgentFlag = GrapghInfo.GetEncoder(a_index);
     }
 
     void FixedUpdate()
@@ -79,34 +77,40 @@ public class SingleAbsAgentArea : MonoBehaviour
             + spawnTransform.position;
     }
 
-    public Vector3 GetGoalGraph()
+    public float[] InitGoalGraph()
     {
         return GoalFlag;
     }
 
-    public Vector3 GetAgentGraph()
+    public float[] InitAgentGraph()
+    {
+        return AgentFlag;
+    }
+
+    public float[] GetAgentGraph()
     {
         Vector2 agent_pos = new Vector2(m_AgentRb.transform.position[0],  m_AgentRb.transform.position[2]);
-        Vector2 area0_pos = new Vector2(AreaList[0].transform.position[0],  AreaList[0].transform.position[2]);
-        Vector2 area1_pos = new Vector2(AreaList[1].transform.position[0],  AreaList[1].transform.position[2]);
-        bool IsInsideBox_0 = IsPointInRectangle(agent_pos, 
-                                                area0_pos + GetVector2(PosDeltaList,0), area0_pos + GetVector2(PosDeltaList,1), 
-                                                area0_pos + GetVector2(PosDeltaList,2), area0_pos + GetVector2(PosDeltaList,3));
-        bool IsInsideBox_1 = IsPointInRectangle(agent_pos,
-                                                area1_pos + GetVector2(PosDeltaList,0), area1_pos + GetVector2(PosDeltaList,1), 
-                                                area1_pos + GetVector2(PosDeltaList,2), area1_pos + GetVector2(PosDeltaList,3));
-        if (IsInsideBox_0)
+        for (int i =0 ; i < AreaList.Length; i++)
         {
-            return new Vector3(1, 0, 0);
+            Vector2 area_i_pos = new Vector2(AreaList[i].transform.position[0],  AreaList[i].transform.position[2]);
+            bool IsInsideBox_i = IsPointInRectangle(agent_pos, 
+                                            area_i_pos + GetVector2(PosDeltaList,0), area_i_pos + GetVector2(PosDeltaList,1), 
+                                            area_i_pos + GetVector2(PosDeltaList,2), area_i_pos + GetVector2(PosDeltaList,3));
+            if (IsInsideBox_i)
+            {
+                a_index = i;
+            }
         }
-        else if (IsInsideBox_1)
-        {
-            return new Vector3(0, 0, 1);
-        }
-        else
-        {
-            return new Vector3(0, 1, 0);
-        }
+        return GrapghInfo.GetEncoder(a_index);
+
+        // Vector2 area0_pos = new Vector2(AreaList[0].transform.position[0],  AreaList[0].transform.position[2]);
+        // Vector2 area1_pos = new Vector2(AreaList[1].transform.position[0],  AreaList[1].transform.position[2]);
+        // bool IsInsideBox_0 = IsPointInRectangle(agent_pos, 
+        //                                         area0_pos + GetVector2(PosDeltaList,0), area0_pos + GetVector2(PosDeltaList,1), 
+        //                                         area0_pos + GetVector2(PosDeltaList,2), area0_pos + GetVector2(PosDeltaList,3));
+        // bool IsInsideBox_1 = IsPointInRectangle(agent_pos,
+        //                                         area1_pos + GetVector2(PosDeltaList,0), area1_pos + GetVector2(PosDeltaList,1), 
+        //                                         area1_pos + GetVector2(PosDeltaList,2), area1_pos + GetVector2(PosDeltaList,3));
     }
 
     public float Cross(Vector2 a, Vector2 b)
@@ -137,45 +141,95 @@ public class SingleAbsAgentArea : MonoBehaviour
         return isBetweenAB_CD && isBetweenDA_BC;
     }
 
-    public float CalcuMetric(Vector3 x, Vector3 y)
+    public float CalcuMetric(float[] encoder_1, float[] encoder_2)
     {
-        int index_x = 0, index_y = 0;
-        for (int i = 0; i < 3; i++)
+        int x = -1, y = -1;
+        for (int i = 0; i < encoder_1.Length; i++)
         {
-            if (x[i] == 1)
+            if (encoder_1[i] == 1)
             {
-                index_x = i;
+                x = i;
             }
-            if (y[i] == 1)
+            if (encoder_2[i] == 1)
             {
-                index_y = i;
+                y = i;
             }
         }
-        return Math.Abs(index_x - index_y);
-    }
-
-    public float CalcuGraphFlag(Vector3 x, Vector3 y)
-    {
-        if (x == y)
-        {
-            return 1;
-        }
-        else
-        {
-            return 0;
-        }
+        return GrapghInfo.GetDistance(x, y);
     }
 }
 
 
-
-public class GraphFlag
+public class GraphMatrixStructure
 {
-    private int L_graph_x, L_graph_y;
-
-    public void InitGraph(int index, int len_x, int len_y)
+    private int Graph_Len = 4;
+    private float [][] GraphMatrix = {
+            new float [4] {0, int.MaxValue, 1, int.MaxValue},
+            new float [4] {int.MaxValue, 0, 1, int.MaxValue},
+            new float [4] {1, 1, 0, 1},
+            new float [4] {int.MaxValue, int.MaxValue, 1, 0}
+        };
+    
+    public float[] GetEncoder(int index)
     {
-        L_graph_x = len_x;
-        L_graph_y = len_y; 
+        float [] encoder = new float [Graph_Len];
+        for (int i = 0; i < Graph_Len; i++)
+        {
+            if (i == index){
+                encoder[i] = 1;
+            }
+            else{
+                encoder[i] = 0;
+            }
+        }
+        return encoder;
+    }
+
+    public float GetDistance(int x, int y)
+    {
+        float[] distList  = Dijkstra(GraphMatrix, x);
+        return distList[y];
+    }
+
+    public float[] Dijkstra(float[][] mgrap, int v)
+    {
+        int len = Graph_Len;
+        float[] dist = new float[len];
+        int[] path = new int[len];
+        int[] s = new int[len];   
+        float mindis;
+        int i, j, u;
+        u = 0;
+
+        for (i = 0; i < len; i++)
+        {
+            dist[i] = mgrap[v][i];       
+            s[i] = 0;                        
+            if (mgrap[v][i]< int.MaxValue)        
+                path[i] = v;
+            else
+                path[i] = -1;
+        }
+        s[v] = 1;                  
+        path[v] = 0;
+        for (i = 0; i < len; i++)                
+        {
+            mindis = int.MaxValue;                   
+            for (j = 0; j < len; j++)        
+                if (s[j] == 0 && dist[j] < mindis)
+                {
+                    u = j;
+                    mindis = dist[j];
+                }
+            s[u] = 1;                       
+            for (j = 0; j < len; j++)         
+                if (s[j] == 0)
+                    if (mgrap[u][j] < int.MaxValue && dist[u] + mgrap[u][j] < dist[j])
+                    {
+                        dist[j] = dist[u] + mgrap[u][j];
+                        path[j] = u;
+                    }
+        }
+        return dist;
     }
 }

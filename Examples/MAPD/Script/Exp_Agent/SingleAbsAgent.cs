@@ -17,8 +17,8 @@ public class SingleAbsAgent : Agent
     private Rigidbody m_CarRb;
     private float t_dist, p_dist;
     private const int RayNum=18;
-    private Vector3 GraphFlag;
-    private Vector3 GoalFlag;
+    private float[] AgentFlag;
+    private float[] GoalFlag;
     private float E_metric, D_metric;
     
     public override void Initialize()
@@ -28,10 +28,12 @@ public class SingleAbsAgent : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
+        // posistion info
         sensor.AddObservation(m_CarRb.transform.position);
         sensor.AddObservation(Goal.transform.position);
-        sensor.AddObservation(GraphFlag);
-        sensor.AddObservation(GoalFlag);
+        // graph encoder 
+        // sensor.AddObservation(AgentFlag);
+        // sensor.AddObservation(GoalFlag);
     }
 
     public override void OnEpisodeBegin()
@@ -41,24 +43,25 @@ public class SingleAbsAgent : Agent
 
         t_dist = (m_CarRb.transform.position - Goal.transform.position).magnitude;
         p_dist = (m_CarRb.transform.position - Goal.transform.position).magnitude;
-        GraphFlag = new Vector3(0, 1, 0);
-        GoalFlag = m_MyArea.GetGoalGraph();
+        AgentFlag = m_MyArea.InitAgentGraph();
+        GoalFlag = m_MyArea.InitGoalGraph();
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         t_dist = (m_CarRb.transform.position - Goal.transform.position).magnitude;
         MoveAgent(actionBuffers.DiscreteActions);
-        GraphFlag = m_MyArea.GetAgentGraph();
-        E_metric = m_MyArea.CalcuMetric(GoalFlag, GraphFlag);
+        AgentFlag = m_MyArea.GetAgentGraph();
+        E_metric = m_MyArea.CalcuMetric(AgentFlag, GoalFlag);
         D_metric = t_dist / p_dist;
         
         AddReward(-1 * D_metric);
         AddReward(-1 * E_metric);
 
+        // string DebugInfo = string.Join(",", AgentFlag);
         // Debug.Log(E_metric);
         // Debug.Log(D_metric);
-        Debug.Log(GraphFlag);
+        // Debug.Log(DebugInfo);
     }
 
     public void MoveAgent(ActionSegment<int> act)
