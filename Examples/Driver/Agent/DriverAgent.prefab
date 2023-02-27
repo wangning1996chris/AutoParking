@@ -10,8 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 519996281595981367}
   - component: {fileID: 519996281595981360}
-  - component: {fileID: 2550790422636490710}
-  - component: {fileID: 4635763252060706584}
   m_Layer: 0
   m_Name: DriverAgent
   m_TagString: Untagged
@@ -65,38 +63,6 @@ MonoBehaviour:
   m_UseChildSensors: 1
   m_UseChildActuators: 1
   m_ObservableAttributeHandling: 0
---- !u!114 &2550790422636490710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519996281595981362}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 706562857afca3b409a1d36a4062c5a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agentParameters:
-    maxStep: 0
-  hasUpgradedFromAgentParameters: 1
-  MaxStep: 6000
-  m_Timeout: 3
-  m_StatsInterval: 120
---- !u!114 &4635763252060706584
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519996281595981362}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DecisionPeriod: 3
-  TakeActionsBetweenDecisions: 1
 --- !u!1001 &1275171731722687343
 PrefabInstance:
   m_ObjectHideFlags: 0
