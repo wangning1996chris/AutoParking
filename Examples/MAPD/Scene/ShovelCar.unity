@@ -764,7 +764,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981360, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_BehaviorType
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981360, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_BrainParameters.VectorObservationSize
@@ -1264,11 +1264,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 957401082}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
+  m_Script: {fileID: 11500000, guid: f0d8a468325dd56d8b005ffba384e775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DecisionPeriod: 3
-  TakeActionsBetweenDecisions: 1
+  m_GoalRb: {fileID: 757194710}
 --- !u!114 &957401091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1278,14 +1277,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 957401082}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0430e78510d3e7e5b61f390c253b916, type: 3}
+  m_Script: {fileID: 11500000, guid: ed1d6017aef58b29e9ef736d0cc3581c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 6000
-  m_MyArea: {fileID: 957401093}
+  MaxStep: 60000
+  m_MyArea: {fileID: 957401090}
 --- !u!114 &957401093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1295,10 +1294,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 957401082}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c553d57ead237ce198108bfe70b72375, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_GoalRb: {fileID: 757194710}
+  DecisionPeriod: 3
+  TakeActionsBetweenDecisions: 1
 --- !u!1 &1046574370
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,9 +10,9 @@ using MBaske.MLUtil;
 using MBaske.Sensors.Grid;
 
 // Parking
-public class ShoveCarAgent : Agent
+public class ShovelCarAgent : Agent
 {
-    public ShoveTrainArea m_MyArea; 
+    public ShovelTrainArea m_MyArea; 
     public GridBuffer m_SensorBuffer;
 
     private Vector3 Destination;

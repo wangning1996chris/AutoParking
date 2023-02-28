@@ -5,7 +5,7 @@ using Unity.MLAgentsExamples;
 using MBaske.Sensors.Grid;
 
 // Parking
-public class ShoveTrainArea : Area
+public class ShovelTrainArea : Area
 {
     // public GameObject[] TruckList;
     public GameObject m_GoalRb;
