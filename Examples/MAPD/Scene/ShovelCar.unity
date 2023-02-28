@@ -1126,14 +1126,6 @@ PrefabInstance:
       propertyPath: m_Debug_GridBufferDrawer.Editor
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_Timeout
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: DecisionPeriod
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 6015496777689685484, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.25
@@ -1293,7 +1285,20 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 6000
-  m_MyArea: {fileID: 0}
+  m_MyArea: {fileID: 957401093}
+--- !u!114 &957401093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 957401082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c553d57ead237ce198108bfe70b72375, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_GoalRb: {fileID: 757194710}
 --- !u!1 &1046574370
 GameObject:
   m_ObjectHideFlags: 0
