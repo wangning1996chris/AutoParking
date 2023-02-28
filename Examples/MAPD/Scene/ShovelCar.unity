@@ -746,7 +746,7 @@ PrefabInstance:
       objectReference: {fileID: 5022602860645237092, guid: 0233265d7527752578f0dda5897366b9, type: 3}
     - target: {fileID: 519996281595981360, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_BehaviorName
-      value: ShoveDriver
+      value: ShovelDriver
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981360, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_BehaviorType
@@ -766,7 +766,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981362, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_Name
-      value: ShoveDriverAgent
+      value: ShovelDriverAgent
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981362, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_TagString
