@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4465785, g: 0.49641252, b: 0.574817, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -142,7 +142,7 @@ GameObject:
   - component: {fileID: 278178780}
   m_Layer: 0
   m_Name: shovel (2)
-  m_TagString: Untagged
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -156,7 +156,7 @@ Transform:
   m_GameObject: {fileID: 278178778}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 10.46, y: 0.75, z: -2.25}
-  m_LocalScale: {x: 1.5, y: 0.5, z: 1.5}
+  m_LocalScale: {x: 1.5, y: 2, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 862613184}
@@ -239,7 +239,7 @@ GameObject:
   - component: {fileID: 448580201}
   m_Layer: 0
   m_Name: wall (1)
-  m_TagString: Obstacle
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 523435496}
   m_Layer: 0
   m_Name: shovel (4)
-  m_TagString: Untagged
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -350,7 +350,7 @@ Transform:
   m_GameObject: {fileID: 523435494}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 7.92, y: 0.75, z: -2.25}
-  m_LocalScale: {x: 1.5, y: 0.5, z: 1.5}
+  m_LocalScale: {x: 1.5, y: 2, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 862613184}
@@ -433,7 +433,7 @@ GameObject:
   - component: {fileID: 684563236}
   m_Layer: 0
   m_Name: shovel
-  m_TagString: Untagged
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -530,7 +530,7 @@ GameObject:
   - component: {fileID: 747986911}
   m_Layer: 0
   m_Name: wall (4)
-  m_TagString: Obstacle
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -624,6 +624,7 @@ GameObject:
   - component: {fileID: 757194711}
   - component: {fileID: 757194714}
   - component: {fileID: 757194713}
+  - component: {fileID: 757194715}
   m_Layer: 0
   m_Name: ParkSpot
   m_TagString: goal
@@ -639,8 +640,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 757194710}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 23.41, y: 1.41, z: -5}
-  m_LocalScale: {x: 4, y: 2, z: 2}
+  m_LocalPosition: {x: 24.33, y: 1.26, z: -5.34}
+  m_LocalScale: {x: 4, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1114818882}
@@ -696,6 +697,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 757194710}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &757194715
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 757194710}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &862613183
 GameObject:
   m_ObjectHideFlags: 0
@@ -707,7 +721,7 @@ GameObject:
   - component: {fileID: 862613184}
   m_Layer: 0
   m_Name: PowerShovel
-  m_TagString: Untagged
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1183,7 +1197,7 @@ MonoBehaviour:
   m_AgentGameObject: {fileID: 957401082}
   m_DetectableTags:
   - goal
-  - Obstacle
+  - wall
   m_ColliderMask:
     serializedVersion: 2
     m_Bits: 2147483647
@@ -1922,7 +1936,7 @@ GameObject:
   - component: {fileID: 1113929746}
   m_Layer: 0
   m_Name: wall (3)
-  m_TagString: Obstacle
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2059,7 +2073,7 @@ GameObject:
   - component: {fileID: 1395468972}
   m_Layer: 0
   m_Name: wall (2)
-  m_TagString: Obstacle
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2379,7 +2393,7 @@ GameObject:
   - component: {fileID: 1860683574}
   m_Layer: 0
   m_Name: shovel (1)
-  m_TagString: Untagged
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2393,7 +2407,7 @@ Transform:
   m_GameObject: {fileID: 1860683572}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 10.46, y: 0.75, z: 0.15}
-  m_LocalScale: {x: 1.5, y: 0.5, z: 1.5}
+  m_LocalScale: {x: 1.5, y: 2, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 862613184}
@@ -2508,7 +2522,7 @@ GameObject:
   - component: {fileID: 1894460656}
   m_Layer: 0
   m_Name: shovel (3)
-  m_TagString: Untagged
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2522,7 +2536,7 @@ Transform:
   m_GameObject: {fileID: 1894460654}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 7.919999, y: 0.75, z: 0.15}
-  m_LocalScale: {x: 1.5, y: 0.5, z: 1.5}
+  m_LocalScale: {x: 1.5, y: 2, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 862613184}
@@ -2605,7 +2619,7 @@ GameObject:
   - component: {fileID: 1926339489}
   m_Layer: 0
   m_Name: shovel (5)
-  m_TagString: Untagged
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
