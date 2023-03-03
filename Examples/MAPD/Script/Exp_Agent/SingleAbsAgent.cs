@@ -59,7 +59,7 @@ public class SingleAbsAgent : Agent
         AddReward(-1 * E_metric);
 
         // string DebugInfo = string.Join(",", AgentFlag);
-        // Debug.Log(E_metric);
+        Debug.Log(E_metric);
         // Debug.Log(D_metric);
         // Debug.Log(DebugInfo);
     }
