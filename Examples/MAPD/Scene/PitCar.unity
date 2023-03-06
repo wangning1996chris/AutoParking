@@ -2751,7 +2751,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 987342668}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 222.45, y: 1, z: -2.86}
+  m_LocalPosition: {x: -77.36, y: 1, z: -0.46}
   m_LocalScale: {x: 3, y: 10, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2834,7 +2834,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7419886774286829736, guid: e879bb3c4608e424f84e3d3e890c9a70, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -102.14431
+      value: -86.29
       objectReference: {fileID: 0}
     - target: {fileID: 7419886774286829736, guid: e879bb3c4608e424f84e3d3e890c9a70, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2842,7 +2842,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7419886774286829736, guid: e879bb3c4608e424f84e3d3e890c9a70, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 59.788765
+      value: 59.79
       objectReference: {fileID: 0}
     - target: {fileID: 7419886774286829736, guid: e879bb3c4608e424f84e3d3e890c9a70, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6536,7 +6536,7 @@ PrefabInstance:
     - target: {fileID: 519996281595981360, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5022602860645237092, guid: 8ac02971fe2dbafeaa05e5fe583c978a, type: 3}
     - target: {fileID: 519996281595981360, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_BehaviorName
       value: PitDriver
