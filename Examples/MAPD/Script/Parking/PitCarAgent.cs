@@ -26,8 +26,12 @@ public class PitCarAgent : Agent
     private float t_distance;
     private float MaxDistance;
     private float p_distance;
+    private float t_dist, p_dist;
+
+    private float total_reward;
+
     private float t_y_pos; //terrain y 
-    private const int RayNum = 18;
+    private const int RayNum = 36;
 
     public override void Initialize()
     {
@@ -63,7 +67,8 @@ public class PitCarAgent : Agent
         // reset distance
         MaxDistance = (m_Car.transform.position - Destination).magnitude;
         t_distance = (m_Car.transform.position - Destination).magnitude;
-       
+        t_dist = (m_Car.transform.position - Destination).magnitude;
+        p_dist = (m_Car.transform.position - Destination).magnitude;
 
         // reset p_value
         p_distance = t_distance;
@@ -86,12 +91,19 @@ public class PitCarAgent : Agent
 
         t_distance = (m_Car.transform.position - Destination).magnitude;
         
-        float distance_reward = -t_distance / MaxDistance;
-        // float distance_reward = (p_distance - t_distance) / MaxDistance * 100;
+        // float distance_reward = -t_distance / MaxDistance;
+        // // float distance_reward = (p_distance - t_distance) / MaxDistance * 100;
         
-        AddReward(distance_reward * 2);
-        Debug.Log(distance_reward * 2);
+        // AddReward(distance_reward*2);
+        // Debug.Log(distance_reward * 2);
+
+        t_dist = (m_Car.transform.position - Destination).magnitude;
+        AddReward((p_dist - t_dist) *10 - 0.001f);
+        Debug.Log((p_dist - t_dist) *10 - 0.001f);
+        total_reward = GetCumulativeReward();
+        Debug.Log(total_reward);
         p_distance = t_distance;
+        p_dist = t_dist;
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -128,7 +140,7 @@ public class PitCarAgent : Agent
         // Success
         Vector3 CarRota = m_Car.transform.rotation.eulerAngles;
         float speed = Math.Abs(m_Car.ForwardSpeed);
-        if (t_distance < 2 && speed < 0.5)
+        if (t_dist < 2 && speed < 0.5)
         {
             Debug.Log("success");
             AddReward(2000);
@@ -151,7 +163,7 @@ public class PitCarAgent : Agent
             Quaternion q = Quaternion.AngleAxis(subAngle, Vector3.up);
             Vector3 forward = q * m_Car.transform.TransformDirection(Vector3.forward);
             Debug.DrawRay(RayPos, forward * 3, Color.green);
-            if (Physics.Raycast(RayPos, forward, 2.8f))
+            if (Physics.Raycast(RayPos, forward, 2.8f))  
             {
                 Debug.Log("collision");
                 AddReward(-1000);
