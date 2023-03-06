@@ -6489,7 +6489,7 @@ PrefabInstance:
     - target: {fileID: 519996281595981360, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5022602860645237092, guid: 2fff7f83e655653bfa4a25eec3320256, type: 3}
     - target: {fileID: 519996281595981360, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_BehaviorName
       value: PitDriver
