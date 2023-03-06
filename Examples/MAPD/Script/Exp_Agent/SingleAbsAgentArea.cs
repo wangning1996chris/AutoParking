@@ -162,12 +162,17 @@ public class SingleAbsAgentArea : MonoBehaviour
 
 public class GraphMatrixStructure
 {
-    private int Graph_Len = 4;
+    private int Graph_Len = 9;
     private float [][] GraphMatrix = {
-            new float [4] {0, 1, 1, int.MaxValue},
-            new float [4] {1, 0, int.MaxValue, 1},
-            new float [4] {1, int.MaxValue, 0, 1},
-            new float [4] {int.MaxValue, 1, 1, 0}
+            new float [9] {0, 1, int.MaxValue, 1, int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue},
+            new float [9] {1, 0, 1, int.MaxValue, 1, int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue},
+            new float [9] {int.MaxValue, 1, 0, int.MaxValue, int.MaxValue, 1, int.MaxValue, int.MaxValue, int.MaxValue},
+            new float [9] {1, int.MaxValue, int.MaxValue, 0, 1, int.MaxValue, 1, int.MaxValue, int.MaxValue},
+            new float [9] {int.MaxValue, 1, int.MaxValue, 1, 0, 1, int.MaxValue, 1, int.MaxValue},
+            new float [9] {int.MaxValue, int.MaxValue, 1, int.MaxValue, 1, 0, int.MaxValue, int.MaxValue, 1},
+            new float [9] {int.MaxValue, int.MaxValue, int.MaxValue, 1, int.MaxValue, int.MaxValue, 0, 1, int.MaxValue},
+            new float [9] {int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue, 1, int.MaxValue, 1, 0, 1},
+            new float [9] {int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue, 1, int.MaxValue, 1, 0}
         };
     
     public float[] GetEncoder(int index)

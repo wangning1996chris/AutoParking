@@ -1,0 +1,42 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1678073993",
+        "python_version": "3.8.13 (default, Oct 21 2022, 23:50:54) \n[GCC 11.2.0]",
+        "command_line_arguments": "/home/wangning/anaconda3/envs/ml-agent/bin/mlagents-learn /home/wangning/\u6587\u6863/grid-sensor-master/Config/PitDriver.yaml --run-id=PitCar --env=/home/wangning/\u6587\u6863/grid-sensor-master/BuildFile/PitCar/pitcar_ppo.x86_64 --num-envs=2 --base-port=5050 --no-graphics --torch-device=cpu --force",
+        "mlagents_version": "0.30.0",
+        "mlagents_envs_version": "0.30.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "1.7.1+rocm3.8",
+        "numpy_version": "1.21.2",
+        "end_time_seconds": "1678073993"
+    },
+    "total": 0.029878951000000598,
+    "count": 1,
+    "self": 0.010938334000115901,
+    "children": {
+        "run_training.setup": {
+            "total": 0.013714958999912596,
+            "count": 1,
+            "self": 0.013714958999912596
+        },
+        "TrainerController.start_learning": {
+            "total": 0.0052256579999721,
+            "count": 1,
+            "self": 7.87899998613284e-05,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 0.005109299000082501,
+                    "count": 1,
+                    "self": 0.005109299000082501
+                },
+                "TrainerController._save_models": {
+                    "total": 3.756900002827024e-05,
+                    "count": 1,
+                    "self": 3.756900002827024e-05
+                }
+            }
+        }
+    }
+}
