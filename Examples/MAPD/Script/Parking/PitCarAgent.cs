@@ -83,7 +83,7 @@ public class PitCarAgent : Agent
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         var actions = actionBuffers.ContinuousActions;
-        m_Car.Move(actions[0], actions[1]*200, actions[1], actions[2]);
+        m_Car.Move(actions[0], actions[1]*100, actions[1], actions[2]);
         IsEndEpisode();
 
         t_distance = (m_Car.transform.position - Destination).magnitude;
@@ -150,7 +150,7 @@ public class PitCarAgent : Agent
             if (Physics.Raycast(RayPos, forward, 2.8f))  
             {
                 Debug.Log("collision");
-                AddReward(-1000);
+                // AddReward(-1000);
                 EndEpisode();  
                 break;
             }
