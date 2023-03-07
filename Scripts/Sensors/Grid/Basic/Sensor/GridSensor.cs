@@ -138,7 +138,7 @@ namespace MBaske.Sensors.Grid
 
             return m_CompressedObs.ToArray();
         }
-
+    
         /// <inheritdoc/>
         public int Write(ObservationWriter writer)
         {
