@@ -6557,7 +6557,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981367, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -136.53
+      value: -125.93
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981367, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6991,7 +6991,7 @@ MonoBehaviour:
   - {r: 0.5754717, g: 0.12886801, b: 0.04071733, a: 0}
   - {r: 0.24417053, g: 0.8773585, b: 0.27048215, a: 0}
   m_GizmoYOffset: 0
-  m_ShowGizmos: 1
+  m_ShowGizmos: 0
   m_CompressionType: 1
   m_ObservationStacks: 1
 --- !u!65 &1389301111
@@ -7007,30 +7007,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.7682438, y: 1.1886022, z: 5.0083866}
   m_Center: {x: 0.0035476685, y: 0.9676448, z: -0.20853043}
---- !u!114 &1389301112
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1389301105}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f67c7e722ba14acd9153bb4488bff6e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SensorName: RayPerceptionSensor
-  m_DetectableTags: []
-  m_RaysPerDirection: 1
-  m_MaxRayDegrees: 70
-  m_SphereCastRadius: 0.5
-  m_RayLength: 20
-  m_RayLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967291
-  m_ObservationStacks: 1
-  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
-  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!4 &1389301113 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1275171731722815965, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
@@ -7916,6 +7892,65 @@ Transform:
   m_Father: {fileID: 81478020}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1624249956
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1624249957}
+  - component: {fileID: 1624249958}
+  m_Layer: 0
+  m_Name: 3DRayCast
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1624249957
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624249956}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: -0, w: -0.7071068}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1389301113}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
+--- !u!114 &1624249958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624249956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SensorName: RayPerceptionSensor
+  m_DetectableTags:
+  - Goal_0
+  m_RaysPerDirection: 0
+  m_MaxRayDegrees: 0
+  m_SphereCastRadius: 1
+  m_RayLength: 20
+  m_RayLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967291
+  m_ObservationStacks: 1
+  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
+  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
+  m_StartVerticalOffset: 0
+  m_EndVerticalOffset: 0
 --- !u!1 &1650042664
 GameObject:
   m_ObjectHideFlags: 0
@@ -12899,7 +12934,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2136143804}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -184.9, y: 103.8, z: -84.88713}
+  m_LocalPosition: {x: -184.9, y: 103.8, z: -84.93}
   m_LocalScale: {x: 20, y: 2, z: 80}
   m_ConstrainProportionsScale: 0
   m_Children: []

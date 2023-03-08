@@ -13,6 +13,7 @@ using MBaske.Sensors.Grid;
 public class PitCarAgent : Agent
 {
     public PitTrainArea m_MyArea; 
+    RayPerceptionSensorComponent3D m_RayPerceptionSensor;
     // public GridBuffer m_SensorBuffer;
 
     private Vector3 Destination;
@@ -37,6 +38,7 @@ public class PitCarAgent : Agent
         m_Car = GetComponentInChildren<CarController>();
         m_Car.Initialize();
         m_CarRb = GetComponentInChildren<Rigidbody>();
+        m_RayPerceptionSensor = GetComponentInChildren<RayPerceptionSensorComponent3D>();
 
         // m_SensorBuffer = new ColorGridBuffer(2, new Vector2Int(Size, Size));
         // var sensorComp = GetComponent<MBaske.Sensors.Grid.GridSensorComponent>();
@@ -89,8 +91,22 @@ public class PitCarAgent : Agent
         t_distance = (m_Car.transform.position - Destination).magnitude;
         float distance_reward = (p_distance - t_distance) * 10;
         AddReward(distance_reward);
-        Debug.Log(distance_reward);
+        // Debug.Log("distance_reward is " + distance_reward);
         p_distance = t_distance;
+
+        RayPerceptionInput spec = m_RayPerceptionSensor.GetRayPerceptionInput();
+        RayPerceptionOutput obs = RayPerceptionSensor.Perceive(spec);
+        RayPerceptionOutput.RayOutput rayoutput = obs.RayOutputs[0];
+        float[] output_buffer = new float[3];
+        rayoutput.ToFloatArray(1,0,output_buffer);
+        float left_distance = output_buffer[2];
+        if(rayoutput.HitTaggedObject&&(left_distance<0.2f || left_distance>0.4f)){
+            
+            float left_dirve_reward = -Math.Abs(left_distance-0.3f);
+            AddReward(left_dirve_reward);
+            Debug.Log("left drive reward is " + left_dirve_reward);
+            // Debug.Log(left_distance);
+        }
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
