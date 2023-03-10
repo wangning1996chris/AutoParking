@@ -140,7 +140,7 @@ public class PitCarAgent : Agent
         // Success
         Vector3 CarRota = m_Car.transform.rotation.eulerAngles;
         float speed = Math.Abs(m_Car.ForwardSpeed);
-        if (t_distance < 2 && speed < 0.5)
+        if (t_distance < 4 && speed < 0.5) //Attention! 2 -> 4
         {
             Debug.Log("success");
             AddReward(2000);
