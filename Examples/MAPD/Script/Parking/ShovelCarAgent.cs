@@ -28,6 +28,15 @@ public class ShovelCarAgent : Agent
     private float p_distance, p_angle;
     private float t_y_pos; //terrain y 
     private const int RayNum = 18;
+    //draw line 
+    public GameObject lineprefab;
+    public GameObject currentline;
+    public GameObject emptyPrefab;
+    public GameObject lineObject;
+    public LineRenderer line;
+    private Vector3[] path;
+    private List<Vector3> pos = new List<Vector3>();
+    private float timer;
 
     public override void Initialize()
     {
@@ -70,7 +79,11 @@ public class ShovelCarAgent : Agent
         // reset p_value
         p_angle = t_angle;
         p_distance = t_distance;
+
+       //drwa line
+        lineObject = Instantiate(emptyPrefab, m_Car.transform.position, Quaternion.identity, gameObject.transform);
     }
+    
 
     public override void CollectObservations(VectorSensor sensor)
     {
@@ -126,7 +139,25 @@ public class ShovelCarAgent : Agent
         int g_x = (int)Math.Round(curr_Goal_Pos[0]);
         int g_y = (int)Math.Round(curr_Goal_Pos[2]);
         updateSenorAround(Goal, g_x, g_y);
+
+        //drwa line
+        if (timer <= 0)
+        {
+            currentline = Instantiate(lineprefab,m_Car.transform.position, Quaternion.identity, lineObject.transform);
+            line = currentline.GetComponentInChildren<LineRenderer>();
+            pos.Add(m_Car.transform.position);
+            path = pos.ToArray();
+            timer = 0.1f;
+        }
+        timer -= Time.deltaTime;
+
+        if (path.Length != 0)
+        {
+            line.positionCount = path.Length;
+            line.SetPositions(path);
+        }
     }
+    
 
 
     private void updateSenorAround(int Flag, int x, int y)
@@ -154,6 +185,9 @@ public class ShovelCarAgent : Agent
         {
             Debug.Log("success");
             AddReward(2000);
+            pos.Clear();
+            path = pos.ToArray();
+            Destroy(lineObject);
             EndEpisode();
         }
 
@@ -162,6 +196,9 @@ public class ShovelCarAgent : Agent
         {
             Debug.Log("out");
             AddReward(-1000);
+            pos.Clear();
+            path = pos.ToArray();
+            Destroy(lineObject);
             EndEpisode();
         }
 
@@ -177,6 +214,9 @@ public class ShovelCarAgent : Agent
             {
                 Debug.Log("collision");
                 AddReward(-1000);
+                pos.Clear();
+                path = pos.ToArray();
+                Destroy(lineObject);
                 EndEpisode();  
                 break;
             }
