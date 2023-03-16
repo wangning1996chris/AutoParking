@@ -55,7 +55,7 @@ public class PitCarAgent : Agent
         Destination = m_MyArea.GetParkingSpot();
 
         // reset agent
-        m_Car.transform.position = new Vector3(-130f, 0.6f, 1f);
+        m_Car.transform.position = new Vector3(-146f, 0.6f, 1f);
         m_Car.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
         // var xRange = 10;
         // var zRange = 10;
