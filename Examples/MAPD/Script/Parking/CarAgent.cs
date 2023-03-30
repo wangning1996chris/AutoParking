@@ -13,7 +13,7 @@ using MBaske.Sensors.Grid;
 public class CarAgent : Agent
 {
     public TrainArea m_MyArea; 
-    public GridBuffer m_SensorBuffer;
+    // public GridBuffer m_SensorBuffer;
 
     private Vector3 Destination;
     private CarController m_Car;
@@ -45,14 +45,14 @@ public class CarAgent : Agent
         m_Car.Initialize();
         m_CarRb = GetComponentInChildren<Rigidbody>();
 
-        m_SensorBuffer = new ColorGridBuffer(2, new Vector2Int(Size, Size));
-        var sensorComp = GetComponent<MBaske.Sensors.Grid.GridSensorComponent>();
-        sensorComp.GridBuffer = m_SensorBuffer;
-        sensorComp.ChannelLabels = new List<ChannelLabel>()
-        {
-            new ChannelLabel("goal", new Color32(0, 128, 255, 255)),
-            new ChannelLabel("agent", new Color32(64, 255, 64, 255)),
-        };
+        // m_SensorBuffer = new ColorGridBuffer(2, new Vector2Int(Size, Size));
+        // var sensorComp = GetComponent<MBaske.Sensors.Grid.GridSensorComponent>();
+        // sensorComp.GridBuffer = m_SensorBuffer;
+        // sensorComp.ChannelLabels = new List<ChannelLabel>()
+        // {
+        //     new ChannelLabel("goal", new Color32(0, 128, 255, 255)),
+        //     new ChannelLabel("agent", new Color32(64, 255, 64, 255)),
+        // };
     }
 
     public override void OnEpisodeBegin()
@@ -109,7 +109,7 @@ public class CarAgent : Agent
         // float angle_reward = (p_angle - t_angle) / MaxAngle *50;
         
         AddReward(distance_reward * 2 + angle_reward);
-        Debug.Log(distance_reward + angle_reward);
+        // Debug.Log(distance_reward + angle_reward);
 
         p_distance = t_distance;
         p_angle = t_angle;
@@ -125,20 +125,20 @@ public class CarAgent : Agent
 
     private void FixedUpdate()
     {
-        m_SensorBuffer.Clear();
+        // m_SensorBuffer.Clear();
         
         // Agent
         Vector3 curr_Agent_Pos =  m_Car.transform.position;
         int a_x = (int)Math.Round(curr_Agent_Pos[0]);
         int a_y = (int)Math.Round(curr_Agent_Pos[2]);
         t_y_pos = curr_Agent_Pos[1];
-        updateSenorAround(Agent, a_x, a_y);
+        // updateSenorAround(Agent, a_x, a_y);
         
         // Goal
         Vector3 curr_Goal_Pos =  Destination;
         int g_x = (int)Math.Round(curr_Goal_Pos[0]);
         int g_y = (int)Math.Round(curr_Goal_Pos[2]);
-        updateSenorAround(Goal, g_x, g_y);
+        // updateSenorAround(Goal, g_x, g_y);
 
                 //drwa line
         if (timer <= 0)
@@ -159,20 +159,20 @@ public class CarAgent : Agent
     }
 
 
-    private void updateSenorAround(int Flag, int x, int y)
-    {
-        x = x + Size / 2;
-        y = y + Size / 2;
-        int maxN = (aroundScale - 1) / 2;
-        int minN = (1 - aroundScale) / 2; 
-        for (int i = minN; i <= maxN; i++)
-        {
-            for (int j = minN; j <= maxN; j++)
-            {
-                m_SensorBuffer.Write(Flag, x+i, y+j, 1);
-            }
-        }
-    }
+    // private void updateSenorAround(int Flag, int x, int y)
+    // {
+    //     x = x + Size / 2;
+    //     y = y + Size / 2;
+    //     int maxN = (aroundScale - 1) / 2;
+    //     int minN = (1 - aroundScale) / 2; 
+    //     for (int i = minN; i <= maxN; i++)
+    //     {
+    //         for (int j = minN; j <= maxN; j++)
+    //         {
+    //             m_SensorBuffer.Write(Flag, x+i, y+j, 1);
+    //         }
+    //     }
+    // }
 
     private void IsEndEpisode()
     {

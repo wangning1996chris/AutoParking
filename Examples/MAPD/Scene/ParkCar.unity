@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &96782201 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2927300770389711386, guid: 9fcaf54f23f09dd469c6dbb46ee90fe0, type: 3}
+  m_PrefabInstance: {fileID: 1961058944}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &101172740 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2927300770389711386, guid: 9fcaf54f23f09dd469c6dbb46ee90fe0, type: 3}
@@ -225,6 +230,29 @@ Transform:
   m_Father: {fileID: 1114818882}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &252542961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1155519195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7683b18d17b7281098ada8dd368f4c10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TruckList:
+  - {fileID: 96782201}
+  - {fileID: 1802762419}
+  - {fileID: 294115318}
+  - {fileID: 1150586853}
+  - {fileID: 101172740}
+  - {fileID: 810105964}
+  - {fileID: 983111220}
+  - {fileID: 810105964}
+  - {fileID: 409932135}
+  m_GoalRb: {fileID: 1300145753}
 --- !u!1 &294115318 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2927300770389711386, guid: 9fcaf54f23f09dd469c6dbb46ee90fe0, type: 3}
@@ -348,6 +376,11 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.08126023, y: 0.1100918, z: 0.04265867}
   m_Center: {x: -0.00016091917, y: 0.02481348, z: 0.024526555}
+--- !u!1 &409932135 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2927300770389711386, guid: 9fcaf54f23f09dd469c6dbb46ee90fe0, type: 3}
+  m_PrefabInstance: {fileID: 676274167}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &448580199
 GameObject:
   m_ObjectHideFlags: 0
@@ -1014,6 +1047,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2927300770389711386, guid: 9fcaf54f23f09dd469c6dbb46ee90fe0, type: 3}
   m_PrefabInstance: {fileID: 1179055334}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &991953564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1155519195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99d025099f6a5cc498faf992b6745e11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1046574370
 GameObject:
   m_ObjectHideFlags: 0
@@ -1850,7 +1895,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981367, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.08
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981367, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2246,12 +2291,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SensorName: GridSensor
   m_CellScale: {x: 1, y: 0.01, z: 1}
-  m_GridSize: {x: 50, y: 1, z: 50}
+  m_GridSize: {x: 20, y: 1, z: 20}
   m_RotateWithAgent: 1
   m_AgentGameObject: {fileID: 1155519195}
   m_DetectableTags:
   - goal
-  - wall
+  - Obstacle
   m_ColliderMask:
     serializedVersion: 2
     m_Bits: 2147483647
@@ -2313,38 +2358,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DecisionPeriod: 3
   TakeActionsBetweenDecisions: 1
---- !u!114 &1155519200
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1155519195}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2b1228c827ad8d4d86b457aa28a67be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ObservationShape: 1 channel x 20 width x 20 height
-  m_SensorName: GridSensor
-  m_ObservationStacks: 1
-  m_CompressionType: 1
-  m_ObservationType: 0
-  m_ChannelLabels: []
-  m_Debug_CreateSensorOnAwake: 0
-  m_Debug_CreateSensorOnValidate: 1
-  m_Debug_FrameInterval: 1
-  m_Debug_DrawGridBuffer: 1
-  m_Debug_GridBufferDrawer:
-    Context: {fileID: 0}
-    Editor: {fileID: 0}
-    GridSizeRatio: 0
-    IsEnabled: 0
-    IsStandby: 0
-  m_GridShape:
-    NumChannels: 1
-    Width: 20
-    Height: 20
 --- !u!4 &1155519201 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1275171731722815965, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
