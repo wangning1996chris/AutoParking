@@ -123,16 +123,55 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &96782201 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2927300770389711386, guid: 9fcaf54f23f09dd469c6dbb46ee90fe0, type: 3}
-  m_PrefabInstance: {fileID: 1961058944}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &101172740 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2927300770389711386, guid: 9fcaf54f23f09dd469c6dbb46ee90fe0, type: 3}
   m_PrefabInstance: {fileID: 1326802050}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &245416245
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 245416246}
+  - component: {fileID: 245416247}
+  m_Layer: 0
+  m_Name: RosSub
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &245416246
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 245416245}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 45.333145, y: -134.73291, z: 136.05414}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1114818882}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &245416247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 245416245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99d025099f6a5cc498faf992b6745e11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &250115963
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,29 +269,6 @@ Transform:
   m_Father: {fileID: 1114818882}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &252542961
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1155519195}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7683b18d17b7281098ada8dd368f4c10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TruckList:
-  - {fileID: 96782201}
-  - {fileID: 1802762419}
-  - {fileID: 294115318}
-  - {fileID: 1150586853}
-  - {fileID: 101172740}
-  - {fileID: 810105964}
-  - {fileID: 983111220}
-  - {fileID: 810105964}
-  - {fileID: 409932135}
-  m_GoalRb: {fileID: 1300145753}
 --- !u!1 &294115318 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2927300770389711386, guid: 9fcaf54f23f09dd469c6dbb46ee90fe0, type: 3}
@@ -376,11 +392,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.08126023, y: 0.1100918, z: 0.04265867}
   m_Center: {x: -0.00016091917, y: 0.02481348, z: 0.024526555}
---- !u!1 &409932135 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2927300770389711386, guid: 9fcaf54f23f09dd469c6dbb46ee90fe0, type: 3}
-  m_PrefabInstance: {fileID: 676274167}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &448580199
 GameObject:
   m_ObjectHideFlags: 0
@@ -871,6 +882,52 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.08126023, y: 0.1100918, z: 0.04265867}
   m_Center: {x: -0.00016091917, y: 0.02481348, z: 0.024526555}
+--- !u!1 &747816503
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 747816504}
+  - component: {fileID: 747816505}
+  m_Layer: 0
+  m_Name: RosPub
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &747816504
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747816503}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 45.333145, y: -134.73291, z: 136.05414}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1114818882}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &747816505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747816503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3cd1f1e39ddeac4d9818acc59d7a889, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topicName: /cmd_vel
+  publishMessageFrequency: 0.5
 --- !u!1001 &803908795
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1054,7 +1111,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1155519195}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 99d025099f6a5cc498faf992b6745e11, type: 3}
   m_Name: 
@@ -1838,6 +1895,8 @@ Transform:
   - {fileID: 1395468971}
   - {fileID: 1113929745}
   - {fileID: 803908796}
+  - {fileID: 747816504}
+  - {fileID: 245416246}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2344,6 +2403,8 @@ MonoBehaviour:
   emptyPrefab: {fileID: 1321469553664683742, guid: 971932b370a2b1669a9a293082864f83, type: 3}
   lineObject: {fileID: 803908797}
   line: {fileID: 803908798}
+  rosPub: {fileID: 747816505}
+  rosSub: {fileID: 245416247}
 --- !u!114 &1155519199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2358,6 +2419,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DecisionPeriod: 3
   TakeActionsBetweenDecisions: 1
+--- !u!114 &1155519200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1155519195}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3cd1f1e39ddeac4d9818acc59d7a889, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topicName: /cmd_vel
+  publishMessageFrequency: 0.5
 --- !u!4 &1155519201 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1275171731722815965, guid: 165592babcb3b6f438938066f825ef8c, type: 3}

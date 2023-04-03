@@ -126,8 +126,10 @@ public class CarAgent : Agent
         actions[1] = Mathf.RoundToInt(Input.GetAxis("Vertical"));
         actions[2] = Mathf.RoundToInt(Input.GetAxis("Jump"));
 
+        // ROS Connect
         rosPub.Update();
-        rosSub.Update();
+        double[] posList = rosSub.UpdatePos();
+        string laserScan = rosSub.UpdateScan();
     }
 
     private void FixedUpdate()
