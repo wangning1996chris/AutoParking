@@ -1897,6 +1897,8 @@ Transform:
   - {fileID: 245416246}
   - {fileID: 1155519192}
   - {fileID: 803908796}
+  - {fileID: 747816504}
+  - {fileID: 245416246}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2403,6 +2405,8 @@ MonoBehaviour:
   emptyPrefab: {fileID: 1321469553664683742, guid: 971932b370a2b1669a9a293082864f83, type: 3}
   lineObject: {fileID: 803908797}
   line: {fileID: 803908798}
+  rosPub: {fileID: 747816505}
+  rosSub: {fileID: 245416247}
 --- !u!114 &1155519199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2417,6 +2421,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DecisionPeriod: 3
   TakeActionsBetweenDecisions: 1
+--- !u!114 &1155519200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1155519195}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3cd1f1e39ddeac4d9818acc59d7a889, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topicName: /cmd_vel
+  publishMessageFrequency: 0.5
 --- !u!114 &1155519200
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -29,7 +29,7 @@ public class CarAgent : Agent
     private float t_y_pos;
     private const int RayNum = 18;
 
-        //draw line 
+    // draw line 
     public GameObject lineprefab;
     public GameObject currentline;
     public GameObject emptyPrefab;
@@ -38,6 +38,10 @@ public class CarAgent : Agent
     private Vector3[] path;
     private List<Vector3> pos = new List<Vector3>();
     private float timer;
+
+    // connect with ros
+    public RosPublisher rosPub;
+    public RosSubscriber rosSub;
 
     public override void Initialize()
     {
@@ -62,7 +66,7 @@ public class CarAgent : Agent
 
         // reset agent
         // m_Car.transform.position = new Vector3(0, 1, 0);
-        //  m_Car.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+        // m_Car.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
         var xRange = 5;
         var zRange = 10;
         m_Car.transform.position = new Vector3(UnityEngine.Random.Range(-xRange, 0), 1, UnityEngine.Random.Range(-zRange, zRange));
@@ -81,7 +85,7 @@ public class CarAgent : Agent
         p_angle = t_angle;
         p_distance = t_distance;
 
-               //drwa line
+        //drwa line
         lineObject = Instantiate(emptyPrefab, m_Car.transform.position, Quaternion.identity, gameObject.transform);
     }
 
@@ -121,6 +125,11 @@ public class CarAgent : Agent
         actions[0] = Mathf.RoundToInt(Input.GetAxis("Horizontal"));
         actions[1] = Mathf.RoundToInt(Input.GetAxis("Vertical"));
         actions[2] = Mathf.RoundToInt(Input.GetAxis("Jump"));
+
+        // ROS Connect
+        rosPub.Update();
+        double[] posList = rosSub.UpdatePos();
+        string laserScan = rosSub.UpdateScan();
     }
 
     private void FixedUpdate()
@@ -140,7 +149,7 @@ public class CarAgent : Agent
         int g_y = (int)Math.Round(curr_Goal_Pos[2]);
         // updateSenorAround(Goal, g_x, g_y);
 
-                //drwa line
+        //drwa line
         if (timer <= 0)
         {
             currentline = Instantiate(lineprefab,m_Car.transform.position, Quaternion.identity, lineObject.transform);
@@ -156,6 +165,9 @@ public class CarAgent : Agent
             line.positionCount = path.Length;
             line.SetPositions(path);
         }
+
+        // Cmd Out to Ros
+
     }
 
 

@@ -21,7 +21,7 @@ public class RosPublisher : MonoBehaviour
         ros.RegisterPublisher<TwistMsg>(topicName);
     }
 
-    private void Update()
+    public void Update()
     {
         timeElapsed += Time.deltaTime;
 
