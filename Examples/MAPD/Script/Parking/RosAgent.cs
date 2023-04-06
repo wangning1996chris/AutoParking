@@ -12,6 +12,8 @@ using MBaske.MLUtil;
 
 public class RosAgent : Agent
 {
+    public TrainArea m_MyArea;
+    private Vector3 Destination;
     private Rigidbody m_CarRb;
     // connect with ros
     public RosPublisher rosPub;
@@ -19,6 +21,11 @@ public class RosAgent : Agent
     private double[] posList;
     private string laserScan;
     private float x, y, z;
+    private float t_distance, t_angle;
+    private float MaxDistance, MaxAngle;
+    private float p_distance, p_angle;
+    private float t_y_pos;
+    private const int RayNum = 18;
     
     public override void Initialize()
     {
@@ -29,22 +36,52 @@ public class RosAgent : Agent
     {
         // posistion info
         sensor.AddObservation(m_CarRb.transform.position);
+        sensor.AddObservation(m_CarRb.transform.rotation);
+        sensor.AddObservation(m_CarRb.velocity[0]);
+        sensor.AddObservation(Destination);
     }
 
     public override void OnEpisodeBegin()
     {
-        m_CarRb.transform.position = new Vector3(10, 2, 0);
+        m_CarRb.transform.position = new Vector3(0, 2, 0);
         m_CarRb.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+        m_MyArea.ResetObject();
+        Destination = m_MyArea.GetParkingSpot();
+        t_y_pos = 1;
+        
+        // reset distance
+        MaxDistance = (m_CarRb.transform.position - Destination).magnitude;
+        t_distance = (m_CarRb.transform.position - Destination).magnitude;
+        MaxAngle = Math.Abs(m_CarRb.transform.rotation.eulerAngles[1] - 270);
+        t_angle = Math.Abs(m_CarRb.transform.rotation.eulerAngles[1] - 270);
+
+        // reset p_value
+        p_angle = t_angle;
+        p_distance = t_distance;
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         // Start Train
-        // MoveAgent(actionBuffers.DiscreteActions);
+        MoveAgent(actionBuffers.DiscreteActions);
+        IsEndEpisode();
 
+        t_distance = (m_CarRb.transform.position - Destination).magnitude;
+        t_angle = Math.Abs(m_CarRb.transform.rotation.eulerAngles[1] - 270);
+        
+        float distance_reward = -t_distance / MaxDistance;
+        float angle_reward = -t_angle / MaxAngle;
+        // float distance_reward = (p_distance - t_distance) / MaxDistance * 100;
+        // float angle_reward = (p_angle - t_angle) / MaxAngle *50;
+        
+        AddReward(distance_reward * 2 + angle_reward);
+        Debug.Log(distance_reward + angle_reward);
+
+        p_distance = t_distance;
+        p_angle = t_angle;
         // Start ROS
-        rosPub.Update();
-        Invoke("updateRosSub", 0.02f);
+        // rosPub.Update();
+        // Invoke("updateRosSub", 0.02f);
     }
 
     public void MoveAgent(ActionSegment<int> act)
@@ -105,5 +142,45 @@ public class RosAgent : Agent
         y = 2;
         z = (float)posList[1] * 4;
         m_CarRb.transform.position = new Vector3(x, y, z);
+    }
+
+
+    private void IsEndEpisode()
+    {
+        // Success
+        Vector3 CarRota = m_CarRb.transform.rotation.eulerAngles;
+        float speed = Math.Abs(m_CarRb.velocity[0]);
+        float angle = Math.Abs(CarRota[1] - 270);
+        if (t_distance < 2.8 && speed < 1.5 && angle < 18)
+        {
+            Debug.Log("success");
+            AddReward(2000);
+            EndEpisode();
+        }
+
+        // Failed: out of space
+        if (!Physics.Raycast(m_CarRb.transform.position, Vector3.down, 3f) || t_y_pos < 1)
+        {
+            Debug.Log("out");
+            AddReward(-1000);
+            EndEpisode();
+        }
+
+        // Failed: Collision
+        Vector3 RayPos = m_CarRb.transform.position  + new Vector3(0, 1, 0);
+        for (int i = 0; i < RayNum-1; i ++)
+        {
+            float subAngle = -(360 / RayNum) * i;
+            Quaternion q = Quaternion.AngleAxis(subAngle, Vector3.up);
+            Vector3 forward = q * m_CarRb.transform.TransformDirection(Vector3.forward);
+            Debug.DrawRay(RayPos, forward * 3, Color.green);
+            if (Physics.Raycast(RayPos, forward, 1.8f))
+            {
+                Debug.Log("collision");
+                AddReward(-1000);
+                EndEpisode();
+            }
+        }
+
     }
 }
