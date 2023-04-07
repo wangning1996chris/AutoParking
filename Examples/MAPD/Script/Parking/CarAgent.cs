@@ -113,7 +113,7 @@ public class CarAgent : Agent
         // float angle_reward = (p_angle - t_angle) / MaxAngle *50;
         
         AddReward(distance_reward * 2 + angle_reward);
-        // Debug.Log(distance_reward + angle_reward);
+        Debug.Log(distance_reward + angle_reward);
 
         p_distance = t_distance;
         p_angle = t_angle;

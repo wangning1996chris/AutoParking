@@ -27,8 +27,8 @@ public class RosPublisher : MonoBehaviour
 
         if (timeElapsed > publishMessageFrequency)
         {
-            Vector3Msg linear = new Vector3Msg(1.0,0,0);
-            Vector3Msg angular = new Vector3Msg(0,0,2.0);
+            Vector3Msg linear = new Vector3Msg(1,0,0);
+            Vector3Msg angular = new Vector3Msg(0,0,0);
 
             TwistMsg twist = new TwistMsg(linear,angular);
 
