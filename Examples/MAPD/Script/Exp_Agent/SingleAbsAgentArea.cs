@@ -53,7 +53,7 @@ public class SingleAbsAgentArea : MonoBehaviour
         xRange = a_spawnTransform.localScale.x / 3.5f;
         zRange = a_spawnTransform.localScale.z / 3.5f;
 
-        m_AgentRb.transform.position = new Vector3(Random.Range(-xRange, xRange), 1f, Random.Range(-zRange, zRange))
+        m_AgentRb.transform.position = new Vector3(Random.Range(-xRange, xRange), 1.8f, Random.Range(-zRange, zRange))
             + a_spawnTransform.position;
         m_AgentRb.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f));
         m_AgentRb.velocity = Vector3.zero;
@@ -174,6 +174,14 @@ public class GraphMatrixStructure
             new float [9] {int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue, 1, int.MaxValue, 1, 0, 1},
             new float [9] {int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue, 1, int.MaxValue, 1, 0}
         };
+
+    // private int Graph_Len = 4;
+    // private float [][] GraphMatrix = {
+    //         new float [4] {0, 1, 1, int.MaxValue},
+    //         new float [4] {1, 0, int.MaxValue, 1},
+    //         new float [4] {1, int.MaxValue, 0, 1},
+    //         new float [4] {int.MaxValue, 1, 1, 0}
+    //     };
     
     public float[] GetEncoder(int index)
     {
