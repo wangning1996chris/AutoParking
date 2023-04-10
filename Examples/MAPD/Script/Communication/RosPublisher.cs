@@ -30,6 +30,8 @@ public class RosPublisher : MonoBehaviour
 
         if (timeElapsed > publishMessageFrequency)
         {
+
+            
             Vector3Msg linear = new Vector3Msg(velocity.x,0,0);
             Debug.Log("velocity"+velocity.x);
             Vector3Msg angular = new Vector3Msg(0,0,0);
