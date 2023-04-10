@@ -32,8 +32,8 @@ public class SingleAbsAgent : Agent
         sensor.AddObservation(m_CarRb.transform.position);
         sensor.AddObservation(Goal.transform.position);
         // graph encoder 
-        // sensor.AddObservation(AgentFlag);
-        // sensor.AddObservation(GoalFlag);
+        sensor.AddObservation(AgentFlag);
+        sensor.AddObservation(GoalFlag);
     }
 
     public override void OnEpisodeBegin()
@@ -52,7 +52,7 @@ public class SingleAbsAgent : Agent
         t_dist = (m_CarRb.transform.position - Goal.transform.position).magnitude;
         MoveAgent(actionBuffers.DiscreteActions);
         AgentFlag = m_MyArea.GetAgentGraph();
-        E_metric = m_MyArea.CalcuMetric(AgentFlag, GoalFlag);
+        E_metric = m_MyArea.CalcuMetric(AgentFlag, GoalFlag) / 4; // Norm
         D_metric = t_dist / p_dist;
         
         AddReward(-1 * D_metric);
@@ -129,7 +129,7 @@ public class SingleAbsAgent : Agent
         if (collision.gameObject.CompareTag("wall"))
         {
             Debug.Log("collision");
-            AddReward(-10);
+            AddReward(-1);
         }
     }
 }

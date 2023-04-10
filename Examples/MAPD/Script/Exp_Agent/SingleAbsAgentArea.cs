@@ -25,7 +25,7 @@ public class SingleAbsAgentArea : MonoBehaviour
     void Start()
     {
         m_AgentRb = m_Agent.GetComponent<Rigidbody>();
-        PosDeltaList = new List<(int x, int y)> {(45, 25), (-45, 25), (-45, -25), (45, -25)};
+        PosDeltaList = new List<(int x, int y)> {(16, 16), (-16, 16), (-16, -16), (16, -16)};
         GrapghInfo = new GraphMatrixStructure();
         g_index = -1;
         a_index = -1;
@@ -90,7 +90,7 @@ public class SingleAbsAgentArea : MonoBehaviour
     public float[] GetAgentGraph()
     {
         Vector2 agent_pos = new Vector2(m_AgentRb.transform.position[0],  m_AgentRb.transform.position[2]);
-        for (int i =0 ; i < AreaList.Length; i++)
+        for (int i = 0 ; i < AreaList.Length; i++)
         {
             Vector2 area_i_pos = new Vector2(AreaList[i].transform.position[0],  AreaList[i].transform.position[2]);
             bool IsInsideBox_i = IsPointInRectangle(agent_pos, 
@@ -174,14 +174,6 @@ public class GraphMatrixStructure
             new float [9] {int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue, 1, int.MaxValue, 1, 0, 1},
             new float [9] {int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue, 1, int.MaxValue, 1, 0}
         };
-
-    // private int Graph_Len = 4;
-    // private float [][] GraphMatrix = {
-    //         new float [4] {0, 1, 1, int.MaxValue},
-    //         new float [4] {1, 0, int.MaxValue, 1},
-    //         new float [4] {1, int.MaxValue, 0, 1},
-    //         new float [4] {int.MaxValue, 1, 1, 0}
-    //     };
     
     public float[] GetEncoder(int index)
     {
