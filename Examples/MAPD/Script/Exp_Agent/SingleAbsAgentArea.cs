@@ -25,7 +25,7 @@ public class SingleAbsAgentArea : MonoBehaviour
     void Start()
     {
         m_AgentRb = m_Agent.GetComponent<Rigidbody>();
-        PosDeltaList = new List<(int x, int y)> {(45, 25), (-45, 25), (-45, -25), (45, -25)};
+        PosDeltaList = new List<(int x, int y)> {(16, 16), (-16, 16), (-16, -16), (16, -16)};
         GrapghInfo = new GraphMatrixStructure();
         g_index = -1;
         a_index = -1;
@@ -53,7 +53,7 @@ public class SingleAbsAgentArea : MonoBehaviour
         xRange = a_spawnTransform.localScale.x / 3.5f;
         zRange = a_spawnTransform.localScale.z / 3.5f;
 
-        m_AgentRb.transform.position = new Vector3(Random.Range(-xRange, xRange), 1f, Random.Range(-zRange, zRange))
+        m_AgentRb.transform.position = new Vector3(Random.Range(-xRange, xRange), 1.8f, Random.Range(-zRange, zRange))
             + a_spawnTransform.position;
         m_AgentRb.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f));
         m_AgentRb.velocity = Vector3.zero;
@@ -90,7 +90,7 @@ public class SingleAbsAgentArea : MonoBehaviour
     public float[] GetAgentGraph()
     {
         Vector2 agent_pos = new Vector2(m_AgentRb.transform.position[0],  m_AgentRb.transform.position[2]);
-        for (int i =0 ; i < AreaList.Length; i++)
+        for (int i = 0 ; i < AreaList.Length; i++)
         {
             Vector2 area_i_pos = new Vector2(AreaList[i].transform.position[0],  AreaList[i].transform.position[2]);
             bool IsInsideBox_i = IsPointInRectangle(agent_pos, 

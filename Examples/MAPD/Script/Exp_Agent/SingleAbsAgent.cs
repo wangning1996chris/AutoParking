@@ -32,8 +32,8 @@ public class SingleAbsAgent : Agent
         sensor.AddObservation(m_CarRb.transform.position);
         sensor.AddObservation(Goal.transform.position);
         // graph encoder 
-        // sensor.AddObservation(AgentFlag);
-        // sensor.AddObservation(GoalFlag);
+        sensor.AddObservation(AgentFlag);
+        sensor.AddObservation(GoalFlag);
     }
 
     public override void OnEpisodeBegin()
@@ -52,16 +52,23 @@ public class SingleAbsAgent : Agent
         t_dist = (m_CarRb.transform.position - Goal.transform.position).magnitude;
         MoveAgent(actionBuffers.DiscreteActions);
         AgentFlag = m_MyArea.GetAgentGraph();
-        E_metric = m_MyArea.CalcuMetric(AgentFlag, GoalFlag);
+        E_metric = m_MyArea.CalcuMetric(AgentFlag, GoalFlag) / 4; // Norm
         D_metric = t_dist / p_dist;
         
         AddReward(-1 * D_metric);
         AddReward(-1 * E_metric);
 
         // string DebugInfo = string.Join(",", AgentFlag);
-        Debug.Log(E_metric);
+        // Debug.Log(E_metric);
         // Debug.Log(D_metric);
         // Debug.Log(DebugInfo);
+
+        if (!Physics.Raycast(m_CarRb.transform.position, Vector3.down, 3f))
+        {
+            Debug.Log("out");
+            AddReward(-5000);
+            EndEpisode();
+        }
     }
 
     public void MoveAgent(ActionSegment<int> act)
@@ -86,7 +93,7 @@ public class SingleAbsAgent : Agent
                 break;
         }
         transform.Rotate(rotateDir, Time.deltaTime * 200f);
-        m_CarRb.AddForce(dirToGo * 2, ForceMode.VelocityChange);
+        m_CarRb.AddForce(dirToGo * 4, ForceMode.VelocityChange);
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -122,7 +129,7 @@ public class SingleAbsAgent : Agent
         if (collision.gameObject.CompareTag("wall"))
         {
             Debug.Log("collision");
-            AddReward(-10);
+            AddReward(-1);
         }
     }
 }
