@@ -24,10 +24,14 @@ public class RosPublisher : MonoBehaviour
     public void Update()
     {
         timeElapsed += Time.deltaTime;
+    }
+
+    public void Publish(Vector3 velocity,Vector3 angularVelocity){
 
         if (timeElapsed > publishMessageFrequency)
         {
-            Vector3Msg linear = new Vector3Msg(1,0,0);
+            Vector3Msg linear = new Vector3Msg(velocity.x,0,0);
+            Debug.Log("velocity"+velocity.x);
             Vector3Msg angular = new Vector3Msg(0,0,0);
 
             TwistMsg twist = new TwistMsg(linear,angular);

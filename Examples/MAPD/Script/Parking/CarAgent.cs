@@ -128,7 +128,7 @@ public class CarAgent : Agent
 
         // ROS Connect
         rosPub.Update();
-        double[] posList = rosSub.UpdatePos();
+        float[] posList = rosSub.UpdatePos();
         string laserScan = rosSub.UpdateScan();
     }
 
