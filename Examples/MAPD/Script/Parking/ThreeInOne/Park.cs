@@ -176,8 +176,17 @@ public class Park : Agent
             float subAngle = -(360 / RayNum) * i;
             Quaternion q = Quaternion.AngleAxis(subAngle, Vector3.up);
             Vector3 forward = q * m_Car.transform.TransformDirection(Vector3.forward);
-            Debug.DrawRay(RayPos, forward * 3, Color.green);
-            if (Physics.Raycast(RayPos, forward, 2.8f))
+             //调整射线长度，使长方形车身前后与左右方向探测距离相等
+            float rayLength;
+            if(i<=2 || i>= RayNum-3){ //前方
+                rayLength = 2.5f;
+            }else if(i>=RayNum/2 && i<= RayNum/2+2){ //后方
+                rayLength = 3.0f;
+            }else {          //左右
+                rayLength = 1.5f; 
+            }
+
+            if (Physics.Raycast(RayPos, forward, rayLength))
             {
                 Debug.Log("collision");
                 AddReward(-1000);

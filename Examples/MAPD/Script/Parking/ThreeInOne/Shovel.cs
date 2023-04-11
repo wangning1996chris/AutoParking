@@ -47,7 +47,7 @@ public class Shovel : Agent
 
     public override void OnEpisodeBegin()
     {
-        Destination = new Vector3(116, 1, -258);
+        Destination = new Vector3(116, 1, -259);
         // reset agent
         m_Car.transform.position = new Vector3(98, 1, -237);
         m_Car.transform.rotation = Quaternion.Euler(new Vector3(0f, 305f, 0f));
@@ -177,10 +177,16 @@ public class Shovel : Agent
             Quaternion q = Quaternion.AngleAxis(subAngle, Vector3.up);
             Vector3 forward = q * m_Car.transform.TransformDirection(Vector3.forward);
             Debug.DrawRay(RayPos, forward * 3, Color.green);
-            float rayLength = 1.8f;
-            if(i==0 || i==RayNum/2 + 1){
-                rayLength = 2.8f;
+            //调整射线长度，使长方形车身前后与左右方向探测距离相等
+            float rayLength;
+            if(i<=2 || i>= RayNum-3){ //前方
+                rayLength = 2.5f;
+            }else if(i>=RayNum/2 && i<= RayNum/2+2){ //后方
+                rayLength = 3.0f;
+            }else {          //左右
+                rayLength = 1.5f; 
             }
+
             if (Physics.Raycast(RayPos, forward, rayLength))
             {
                 Debug.Log("collision");
