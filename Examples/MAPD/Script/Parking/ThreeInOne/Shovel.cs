@@ -49,8 +49,8 @@ public class Shovel : Agent
     {
         Destination = new Vector3(116, 1, -259);
         // reset agent
-        m_Car.transform.position = new Vector3(98, 1, -237);
-        m_Car.transform.rotation = Quaternion.Euler(new Vector3(0f, 305f, 0f));
+        m_Car.transform.position = new Vector3(98, 1, -237)+new Vector3(UnityEngine.Random.Range(-3, 3), 0, UnityEngine.Random.Range(-3, 3));
+        m_Car.transform.rotation = Quaternion.Euler(new Vector3(0f, 305f, 0f)+new Vector3(0f, UnityEngine.Random.Range(-30, 30), 0f));
         // var xRange = 5;
         // var zRange = 10;
         // m_Car.transform.position = new Vector3(UnityEngine.Random.Range(-xRange, 0), 1, UnityEngine.Random.Range(-zRange, zRange));
