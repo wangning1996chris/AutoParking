@@ -96,7 +96,7 @@ public class Shovel : Agent
         // float angle_reward = (p_angle - t_angle) / MaxAngle *50;
         
         AddReward(distance_reward * 2 + angle_reward);
-        // Debug.Log(distance_reward + angle_reward);
+        Debug.Log(distance_reward * 2 + angle_reward);
 
         p_distance = t_distance;
         p_angle = t_angle;
@@ -111,24 +111,24 @@ public class Shovel : Agent
 
     }
 
-    private void FixedUpdate()
-    {
-        // m_SensorBuffer.Clear();
+    // private void FixedUpdate()
+    // {
+    //     // m_SensorBuffer.Clear();
         
-        // Agent
-        Vector3 curr_Agent_Pos =  m_Car.transform.position;
-        int a_x = (int)Math.Round(curr_Agent_Pos[0]);
-        int a_y = (int)Math.Round(curr_Agent_Pos[2]);
-        t_y_pos = curr_Agent_Pos[1];
-        // updateSenorAround(Agent, a_x, a_y);
+    //     // Agent
+    //     Vector3 curr_Agent_Pos =  m_Car.transform.position;
+    //     int a_x = (int)Math.Round(curr_Agent_Pos[0]);
+    //     int a_y = (int)Math.Round(curr_Agent_Pos[2]);
+    //     t_y_pos = curr_Agent_Pos[1];
+    //     // updateSenorAround(Agent, a_x, a_y);
         
-        // Goal
-        Vector3 curr_Goal_Pos =  Destination;
-        int g_x = (int)Math.Round(curr_Goal_Pos[0]);
-        int g_y = (int)Math.Round(curr_Goal_Pos[2]);
-        // updateSenorAround(Goal, g_x, g_y);
+    //     // Goal
+    //     Vector3 curr_Goal_Pos =  Destination;
+    //     int g_x = (int)Math.Round(curr_Goal_Pos[0]);
+    //     int g_y = (int)Math.Round(curr_Goal_Pos[2]);
+    //     // updateSenorAround(Goal, g_x, g_y);
 
-    }
+    // }
 
 
     // private void updateSenorAround(int Flag, int x, int y)
@@ -154,20 +154,20 @@ public class Shovel : Agent
         float angle = Math.Abs(CarRota[1] - 306);
         // Debug.Log("distance"+t_distance);
         // Debug.Log("angle"+m_Car.transform.rotation.eulerAngles[1]);
-        if (t_distance < 1.8 && speed < 0.5 && angle < 8)
+        if (t_distance < 2.8 && speed < 2.5 && angle < 28)
         {
             Debug.Log("success");
             AddReward(2000);
             EndEpisode();
         }
 
-        // Failed: out of space
-        if (!Physics.Raycast(m_Car.transform.position, Vector3.down, 3f) || t_y_pos < 1)
-        {
-            Debug.Log("out");
-            AddReward(-1000);
-            EndEpisode();
-        }
+        // // Failed: out of space
+        // if (!Physics.Raycast(m_Car.transform.position, Vector3.down, 3f) || t_y_pos < 1)
+        // {
+        //     Debug.Log("out");
+        //     AddReward(-1000);
+        //     EndEpisode();
+        // }
 
         // Failed: Collision
         Vector3 RayPos = m_Car.transform.position  + new Vector3(0, 1, 0);
