@@ -5,8 +5,8 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
-using UnityStandardAssets.Vehicles.Car;
-using MBaske.MLUtil;
+// using UnityStandardAssets.Vehicles.Car;
+// using MBaske.MLUtil;
 // using MBaske.Sensors.Grid;
 
 
@@ -15,7 +15,7 @@ public class SingleAbsAgent : Agent
     public GameObject Goal;
     public SingleAbsAgentArea m_MyArea; 
     private Rigidbody m_CarRb;
-    private float t_dist, p_dist;
+    private float t_dist, p_dist, e_dist;
     private const int RayNum=18;
     private float[] AgentFlag;
     private float[] GoalFlag;
@@ -41,10 +41,11 @@ public class SingleAbsAgent : Agent
         Goal.SetActive(true);
         m_MyArea.ResetObject();
 
-        t_dist = (m_CarRb.transform.position - Goal.transform.position).magnitude;
-        p_dist = (m_CarRb.transform.position - Goal.transform.position).magnitude;
         AgentFlag = m_MyArea.InitAgentGraph();
         GoalFlag = m_MyArea.InitGoalGraph();
+        t_dist = (m_CarRb.transform.position - Goal.transform.position).magnitude;
+        p_dist = (m_CarRb.transform.position - Goal.transform.position).magnitude;
+        e_dist = (m_MyArea.areaId - 1)* 2 ;
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -52,23 +53,23 @@ public class SingleAbsAgent : Agent
         t_dist = (m_CarRb.transform.position - Goal.transform.position).magnitude;
         MoveAgent(actionBuffers.DiscreteActions);
         AgentFlag = m_MyArea.GetAgentGraph();
-        E_metric = m_MyArea.CalcuMetric(AgentFlag, GoalFlag) / 4; // Norm
+        E_metric = m_MyArea.CalcuMetric(AgentFlag, GoalFlag) / e_dist;
         D_metric = t_dist / p_dist;
         
         AddReward(-1 * D_metric);
         AddReward(-1 * E_metric);
 
         // string DebugInfo = string.Join(",", AgentFlag);
-        // Debug.Log(E_metric);
+        // Debug.Log(E_metric * e_dist);
         // Debug.Log(D_metric);
         // Debug.Log(DebugInfo);
 
-        if (!Physics.Raycast(m_CarRb.transform.position, Vector3.down, 3f))
-        {
-            Debug.Log("out");
-            AddReward(-5000);
-            EndEpisode();
-        }
+        // if (!Physics.Raycast(m_CarRb.transform.position, Vector3.down, 3f))
+        // {
+        //     Debug.Log("out");
+        //     AddReward(-5000);
+        //     EndEpisode();
+        // }
     }
 
     public void MoveAgent(ActionSegment<int> act)

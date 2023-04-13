@@ -4,18 +4,21 @@ using System.Linq;
 using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgentsExamples;
-using MBaske.Sensors.Grid;
+// using MBaske.Sensors.Grid;
 using System;
 using Random = UnityEngine.Random;
 using Unity.MLAgents.Actuators;
-using Unity.MLAgents.Sensors;
-using UnityStandardAssets.Vehicles.Car;
+// using Unity.MLAgents.Sensors;
+// using UnityStandardAssets.Vehicles.Car;
+using System.IO;
+
 
 public class SingleAbsAgentArea : MonoBehaviour
 {
     public GameObject[] AreaList;
     public GameObject m_Goal;
     public SingleAbsAgent m_Agent;
+    public int areaId;
     private Rigidbody m_AgentRb;
     private List<(int, int)> PosDeltaList;
     private float[] GoalFlag, AgentFlag;
@@ -27,6 +30,7 @@ public class SingleAbsAgentArea : MonoBehaviour
         m_AgentRb = m_Agent.GetComponent<Rigidbody>();
         PosDeltaList = new List<(int x, int y)> {(16, 16), (-16, 16), (-16, -16), (16, -16)};
         GrapghInfo = new GraphMatrixStructure();
+        GrapghInfo.InitGraphMatrix();
         g_index = -1;
         a_index = -1;
     }
@@ -34,10 +38,10 @@ public class SingleAbsAgentArea : MonoBehaviour
     public void ResetObject()
     {
         float xRange, zRange;
-        var enumerable = Enumerable.Range(0, 4).OrderBy(x => Guid.NewGuid()).Take(2);
-        var items = enumerable.ToArray();
+        var enumerableA = Enumerable.Range(0, areaId).OrderBy(x => Guid.NewGuid()).Take(1);
+        var itemsA = enumerableA.ToArray();
         // Reset Goal
-        g_index = items[0];
+        g_index = areaId * areaId - 1; // Fixed Position of Goal to Speed up Learning
         var g_spawnTransform = AreaList[g_index].transform;
         xRange = g_spawnTransform.localScale.x / 3.5f;
         zRange = g_spawnTransform.localScale.z / 3.5f;
@@ -48,12 +52,12 @@ public class SingleAbsAgentArea : MonoBehaviour
         GoalFlag = GrapghInfo.GetEncoder(g_index);
 
         // Reset Agent
-        a_index = items[1];
+        a_index = itemsA[0]; // Fixed Position of Agent to Speed up Learning
         var a_spawnTransform = AreaList[a_index].transform;
         xRange = a_spawnTransform.localScale.x / 3.5f;
         zRange = a_spawnTransform.localScale.z / 3.5f;
 
-        m_AgentRb.transform.position = new Vector3(Random.Range(-xRange, xRange), 1.8f, Random.Range(-zRange, zRange))
+        m_AgentRb.transform.position = new Vector3(Random.Range(-xRange, xRange), 0f, Random.Range(-zRange, zRange))
             + a_spawnTransform.position;
         m_AgentRb.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f));
         m_AgentRb.velocity = Vector3.zero;
@@ -62,20 +66,17 @@ public class SingleAbsAgentArea : MonoBehaviour
         AgentFlag = GrapghInfo.GetEncoder(a_index);
     }
 
-    void FixedUpdate()
-    {
-    }
 
-    public void SetGoalPos(GameObject goal)
-    {
-        int index = Random.Range(0, AreaList.Length);
-        var spawnTransform = AreaList[index].transform;
-        var xRange = spawnTransform.localScale.x / 3.5f;
-        var zRange = spawnTransform.localScale.z / 3.5f;
+    // public void SetGoalPos(GameObject goal)
+    // {
+    //     int index = Random.Range(0, AreaList.Length);
+    //     var spawnTransform = AreaList[index].transform;
+    //     var xRange = spawnTransform.localScale.x / 5f;
+    //     var zRange = spawnTransform.localScale.z / 5f;
 
-        goal.transform.position = new Vector3(Random.Range(-xRange, xRange), 1f, Random.Range(-zRange, zRange))
-            + spawnTransform.position;
-    }
+    //     goal.transform.position = new Vector3(Random.Range(-xRange, xRange), 1f, Random.Range(-zRange, zRange))
+    //         + spawnTransform.position;
+    // }
 
     public float[] InitGoalGraph()
     {
@@ -162,18 +163,28 @@ public class SingleAbsAgentArea : MonoBehaviour
 
 public class GraphMatrixStructure
 {
-    private int Graph_Len = 9;
-    private float [][] GraphMatrix = {
-            new float [9] {0, 1, int.MaxValue, 1, int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue},
-            new float [9] {1, 0, 1, int.MaxValue, 1, int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue},
-            new float [9] {int.MaxValue, 1, 0, int.MaxValue, int.MaxValue, 1, int.MaxValue, int.MaxValue, int.MaxValue},
-            new float [9] {1, int.MaxValue, int.MaxValue, 0, 1, int.MaxValue, 1, int.MaxValue, int.MaxValue},
-            new float [9] {int.MaxValue, 1, int.MaxValue, 1, 0, 1, int.MaxValue, 1, int.MaxValue},
-            new float [9] {int.MaxValue, int.MaxValue, 1, int.MaxValue, 1, 0, int.MaxValue, int.MaxValue, 1},
-            new float [9] {int.MaxValue, int.MaxValue, int.MaxValue, 1, int.MaxValue, int.MaxValue, 0, 1, int.MaxValue},
-            new float [9] {int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue, 1, int.MaxValue, 1, 0, 1},
-            new float [9] {int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue, 1, int.MaxValue, 1, 0}
-        };
+    private const int Graph_Len = 25;
+    private string Graph_Path = "D:\\CODE\\python\\AutoPark_Lib\\Assets\\Examples\\MAPD\\Script\\Exp_Agent\\Matrix-25.txt";
+    private float [, ] GraphMatrix = new float[Graph_Len, Graph_Len];
+    
+    public void InitGraphMatrix()
+    {
+        string[] lines = File.ReadAllLines(Graph_Path);
+        for (int i = 0; i < Graph_Len; i++)
+        {
+            string[] StrValue = lines[i].Split('\t');
+            for (int j = 0; j < Graph_Len; j++)
+            {
+                float FloatValue = float.Parse(StrValue[j]);
+                // Not Connected
+                if (FloatValue == -1)
+                {
+                    FloatValue = int.MaxValue;
+                }
+                GraphMatrix[i, j] = FloatValue;
+            }
+        }
+    }
     
     public float[] GetEncoder(int index)
     {
@@ -194,9 +205,15 @@ public class GraphMatrixStructure
     {
         float[] distList  = Dijkstra(GraphMatrix, x);
         return distList[y];
+
+        // int x_res = x % 6;
+        // int y_res = y % 6;
+        // int x_mod = x / 6;
+        // int y_mod = y % 6;
+        // return Math.Abs(x_mod + x_res - y_mod - y_res);
     }
 
-    public float[] Dijkstra(float[][] mgrap, int v)
+    public float[] Dijkstra(float[, ] mgrap, int v)
     {
         int len = Graph_Len;
         float[] dist = new float[len];
@@ -208,9 +225,9 @@ public class GraphMatrixStructure
 
         for (i = 0; i < len; i++)
         {
-            dist[i] = mgrap[v][i];       
+            dist[i] = mgrap[v,i];       
             s[i] = 0;                        
-            if (mgrap[v][i]< int.MaxValue)        
+            if (mgrap[v,i]< int.MaxValue)        
                 path[i] = v;
             else
                 path[i] = -1;
@@ -229,9 +246,9 @@ public class GraphMatrixStructure
             s[u] = 1;                       
             for (j = 0; j < len; j++)         
                 if (s[j] == 0)
-                    if (mgrap[u][j] < int.MaxValue && dist[u] + mgrap[u][j] < dist[j])
+                    if (mgrap[u,j] < int.MaxValue && dist[u] + mgrap[u,j] < dist[j])
                     {
-                        dist[j] = dist[u] + mgrap[u][j];
+                        dist[j] = dist[u] + mgrap[u,j];
                         path[j] = u;
                     }
         }
