@@ -31,7 +31,7 @@ public class TrainArea : Area
         // int index = Random.Range(0, TruckList.Length);
         // ParkingSpot = TruckList[index].transform.position + new Vector3(Random.Range(-20, 0), -0.2f, 0);
         // m_GoalRb.transform.position = TruckList[index].transform.position + new Vector3(Random.Range(-20, 0), -0.2f, 0);
-        int index = 4;
+        int index = 3;
         ParkingSpot = TruckList[index].transform.position;
         m_GoalRb.transform.position = TruckList[index].transform.position + new Vector3(0, -0.2f, 0);
         TruckList[index].SetActive(false);

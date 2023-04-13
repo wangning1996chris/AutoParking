@@ -18,7 +18,7 @@ public class RosAgent : Agent
     // connect with ros
     public RosPublisher rosPub;
     public RosSubscriber rosSub;
-    private double[] posList;
+    private float [] posList;
     private string laserScan;
     private float x, y, z;
     private float t_distance, t_angle;
@@ -43,8 +43,9 @@ public class RosAgent : Agent
 
     public override void OnEpisodeBegin()
     {
-        m_CarRb.transform.position = new Vector3(0, 2, 0);
-        m_CarRb.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+        // updateRosSub();
+        m_CarRb.transform.position = new Vector3(0, 2, -2);
+        m_CarRb.transform.rotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
         m_MyArea.ResetObject();
         Destination = m_MyArea.GetParkingSpot();
         t_y_pos = 1;
@@ -58,6 +59,8 @@ public class RosAgent : Agent
         // reset p_value
         p_angle = t_angle;
         p_distance = t_distance;
+
+        // InvokeRepeating("updateRosSub", 1,1);
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -65,7 +68,9 @@ public class RosAgent : Agent
         // Start Train
         MoveAgent(actionBuffers.DiscreteActions);
         IsEndEpisode();
-
+        // Debug.Log(m_CarRb.angularVelocity.x);
+        // Debug.Log(m_CarRb.angularVelocity.y);
+        // Debug.Log(m_CarRb.angularVelocity.z);
         t_distance = (m_CarRb.transform.position - Destination).magnitude;
         t_angle = Math.Abs(m_CarRb.transform.rotation.eulerAngles[1] - 270);
         
@@ -75,13 +80,13 @@ public class RosAgent : Agent
         // float angle_reward = (p_angle - t_angle) / MaxAngle *50;
         
         AddReward(distance_reward * 2 + angle_reward);
-        Debug.Log(distance_reward + angle_reward);
+        // Debug.Log(distance_reward + angle_reward);
 
         p_distance = t_distance;
         p_angle = t_angle;
         // Start ROS
-        // rosPub.Update();
-        // Invoke("updateRosSub", 0.02f);
+
+        
     }
 
     public void MoveAgent(ActionSegment<int> act)
@@ -93,20 +98,20 @@ public class RosAgent : Agent
         switch (action)
         {
             case 1:
-                dirToGo = transform.forward * 1f;
+                dirToGo = transform.forward * 0.2f;
                 break;
             case 2:
-                dirToGo = transform.forward * -1f;
+                dirToGo = transform.forward * -0.2f;
                 break;
             case 3:
-                rotateDir = transform.up * 1f;
+                rotateDir = transform.right * 0.5f;
                 break;
             case 4:
-                rotateDir = transform.up * -1f;
+                rotateDir = transform.right * -0.5f;
                 break;
         }
-        transform.Rotate(rotateDir, Time.deltaTime * 200f);
-        m_CarRb.AddForce(dirToGo, ForceMode.VelocityChange);
+        // transform.Rotate(rotateDir, Time.deltaTime * 200f);
+        m_CarRb.AddForce(dirToGo, ForceMode.Acceleration);
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -131,17 +136,26 @@ public class RosAgent : Agent
     }
 
 
+    // private void FixedUpdate()
+    // {
+    //     rosPub.Publish(m_CarRb.velocity,m_CarRb.angularVelocity);
+    //     // updateRosSub();
+    // }
+
+
     private void updateRosSub()
     {
         // Ros Connect
         posList = rosSub.UpdatePos();
-        laserScan = rosSub.UpdateScan();
+        // laserScan = rosSub.UpdateScan();
 
         // Update
-        x = (float)posList[0] * 4;
+        x = (float)posList[0];
         y = 2;
-        z = (float)posList[1] * 4;
+        z = (float)posList[2];
+        // Debug.Log("x="+x+" z="+z);
         m_CarRb.transform.position = new Vector3(x, y, z);
+        m_CarRb.transform.rotation = new Quaternion((float)posList[3],(float)posList[4],(float)posList[5],(float)posList[6]);
     }
 
 
@@ -151,7 +165,7 @@ public class RosAgent : Agent
         Vector3 CarRota = m_CarRb.transform.rotation.eulerAngles;
         float speed = Math.Abs(m_CarRb.velocity[0]);
         float angle = Math.Abs(CarRota[1] - 270);
-        if (t_distance < 2.8 && speed < 1.5 && angle < 18)
+        if (t_distance < 2.8 && speed < 1.5 )
         {
             Debug.Log("success");
             AddReward(2000);
