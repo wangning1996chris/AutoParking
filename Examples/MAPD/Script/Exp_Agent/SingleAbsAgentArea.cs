@@ -163,8 +163,8 @@ public class SingleAbsAgentArea : MonoBehaviour
 
 public class GraphMatrixStructure
 {
-    private const int Graph_Len = 25;
-    private string Graph_Path = "D:\\CODE\\python\\AutoPark_Lib\\Assets\\Examples\\MAPD\\Script\\Exp_Agent\\Matrix-25.txt";
+    private const int Graph_Len = 36;
+    private string Graph_Path = "D:\\CODE\\python\\AutoPark_Lib\\Assets\\Examples\\MAPD\\Script\\Exp_Agent\\Matrix-36.txt";
     private float [, ] GraphMatrix = new float[Graph_Len, Graph_Len];
     
     public void InitGraphMatrix()
