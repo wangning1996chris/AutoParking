@@ -50,8 +50,8 @@ public class Park : Agent
         Destination = new Vector3(174, 1, 150);
 
         // reset agent
-        m_Car.transform.position = new Vector3(155, 1, 165)+new Vector3(UnityEngine.Random.Range(-3, 3), 0, UnityEngine.Random.Range(-3, 3));
-        m_Car.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f)+new Vector3(0f, UnityEngine.Random.Range(-30, 30), 0f));
+        m_Car.transform.position = new Vector3(145, 1, 160)+new Vector3(UnityEngine.Random.Range(-10, 10), 0, UnityEngine.Random.Range(-10, 10));
+        m_Car.transform.rotation = Quaternion.Euler(new Vector3(0f, UnityEngine.Random.Range(-15, 15), 0f));
         // var xRange = 5;
         // var zRange = 10;
         // m_Car.transform.position = new Vector3(UnityEngine.Random.Range(-xRange, 0), 1, UnityEngine.Random.Range(-zRange, zRange));
