@@ -22,9 +22,9 @@ public class Pit : Agent
     private const int Goal = 0;
     private const int Agent = 1;
     private const int aroundScale = 4;
-    private float t_distance;
-    private float MaxDistance;
-    private float p_distance;
+    private float t_distance, t_angle;
+    private float MaxDistance, MaxAngle;
+    private float p_distance, p_angle;
 
     private float total_reward;
 
@@ -54,25 +54,25 @@ public class Pit : Agent
         switch(random_num)
         {
             case 0:  //start to park
-                Destination = new Vector3(155, 1, 165);
-                ParkSpot.transform.position = new Vector3(155, 1, 165);
-                ParkSpot.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
-                m_Car.transform.position = new Vector3(135, 1, 3);
-                m_Car.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                Destination = new Vector3(145, 1, 160);
+                ParkSpot.transform.position = new Vector3(145, 1, 160);
+                ParkSpot.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                m_Car.transform.position = new Vector3(135, 1, 3)+new Vector3(UnityEngine.Random.Range(-10, 10), 0, UnityEngine.Random.Range(-10, 10));
+                m_Car.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0)+new Vector3(0f, UnityEngine.Random.Range(-15, 15), 0f));
                 break;
             case 1:  //park to shovel
                 Destination = new Vector3(98, 1, -237);
                 ParkSpot.transform.position = new Vector3(98, 1, -237);
-                ParkSpot.transform.rotation = Quaternion.Euler(new Vector3(0, 35, 0));
-                m_Car.transform.position = new Vector3(174, 1, 150);
-                m_Car.transform.rotation = Quaternion.Euler(new Vector3(0, 270, 0));
+                ParkSpot.transform.rotation = Quaternion.Euler(new Vector3(0,305, 0));
+                m_Car.transform.position = new Vector3(174, 1, 150)+new Vector3(UnityEngine.Random.Range(-1, 1), 0, UnityEngine.Random.Range(-1, 1));
+                m_Car.transform.rotation = Quaternion.Euler(new Vector3(0, 270, 0)+new Vector3(0f, UnityEngine.Random.Range(-5, 5), 0f));
                 break;
             case 2:  //shovel back to start
                 Destination = new Vector3(135, 1, 3);
-                ParkSpot.transform.position = new Vector3(98, 1, -237);
+                ParkSpot.transform.position = new Vector3(135, 1, 3);
                 ParkSpot.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
-                m_Car.transform.position = new Vector3(116, 1, -259);
-                m_Car.transform.rotation = Quaternion.Euler(new Vector3(0, 306, 0));
+                m_Car.transform.position = new Vector3(116, 1, -259)+new Vector3(UnityEngine.Random.Range(-1, 1), 0, UnityEngine.Random.Range(-1, 1));
+                m_Car.transform.rotation = Quaternion.Euler(new Vector3(0, 306, 0)+new Vector3(0f, UnityEngine.Random.Range(-5, 5), 0f));
                 break;
             
         }
@@ -84,9 +84,13 @@ public class Pit : Agent
         // reset distance
         MaxDistance = (m_Car.transform.position - Destination).magnitude;
         t_distance = (m_Car.transform.position - Destination).magnitude;
+        MaxAngle = 270;
+        t_angle = Math.Abs(m_Car.transform.rotation.eulerAngles[1] - ParkSpot.transform.rotation.eulerAngles[1]);
 
         // reset p_value
+        p_angle = t_angle;
         p_distance = t_distance;
+
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -105,10 +109,17 @@ public class Pit : Agent
         IsEndEpisode();
 
         t_distance = (m_Car.transform.position - Destination).magnitude;
-        float distance_reward = (p_distance - t_distance) * 10;
-        AddReward(distance_reward);
-        Debug.Log("distance_reward is " + distance_reward);
+        t_angle = Math.Abs(m_Car.transform.rotation.eulerAngles[1] - ParkSpot.transform.rotation.eulerAngles[1]);
+        // float distance_reward = -t_distance / MaxDistance;
+        // float angle_reward = -t_angle / MaxAngle;
+        float distance_reward = (p_distance - t_distance) / MaxDistance * 100;
+        float angle_reward = (p_angle - t_angle) / MaxAngle *50;
+        
+        AddReward(distance_reward + angle_reward);
+        Debug.Log(distance_reward + angle_reward);
+
         p_distance = t_distance;
+        p_angle = t_angle;
 
         // RayPerceptionInput spec = m_RayPerceptionSensor.GetRayPerceptionInput();
         // RayPerceptionOutput obs = RayPerceptionSensor.Perceive(spec);
@@ -156,7 +167,8 @@ public class Pit : Agent
         // Success
         Vector3 CarRota = m_Car.transform.rotation.eulerAngles;
         float speed = Math.Abs(m_Car.ForwardSpeed);
-        if (t_distance < 4 && speed < 1.5) //Attention! 2 -> 4
+        float angle = Math.Abs(CarRota[1] - 270);
+        if (t_distance < 3.5 && speed < 1.5 && angle<18) 
         {
             Debug.Log("success");
             AddReward(2000);
