@@ -57,7 +57,7 @@ public class Pit : Agent
                 Destination = new Vector3(145, 1, 160);
                 ParkSpot.transform.position = new Vector3(145, 1, 160);
                 ParkSpot.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                m_Car.transform.position = new Vector3(135, 1, 3)+new Vector3(UnityEngine.Random.Range(-10, 10), 0, UnityEngine.Random.Range(-10, 10));
+                m_Car.transform.position = new Vector3(-135, 1, 3)+new Vector3(UnityEngine.Random.Range(-10, 10), 0, UnityEngine.Random.Range(-10, 10));
                 m_Car.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0)+new Vector3(0f, UnityEngine.Random.Range(-15, 15), 0f));
                 break;
             case 1:  //park to shovel
@@ -68,8 +68,8 @@ public class Pit : Agent
                 m_Car.transform.rotation = Quaternion.Euler(new Vector3(0, 270, 0)+new Vector3(0f, UnityEngine.Random.Range(-5, 5), 0f));
                 break;
             case 2:  //shovel back to start
-                Destination = new Vector3(135, 1, 3);
-                ParkSpot.transform.position = new Vector3(135, 1, 3);
+                Destination = new Vector3(-135, 1, 3);
+                ParkSpot.transform.position = new Vector3(-135, 1, 3);
                 ParkSpot.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
                 m_Car.transform.position = new Vector3(116, 1, -259)+new Vector3(UnityEngine.Random.Range(-1, 1), 0, UnityEngine.Random.Range(-1, 1));
                 m_Car.transform.rotation = Quaternion.Euler(new Vector3(0, 306, 0)+new Vector3(0f, UnityEngine.Random.Range(-5, 5), 0f));
@@ -112,8 +112,8 @@ public class Pit : Agent
         t_angle = Math.Abs(m_Car.transform.rotation.eulerAngles[1] - ParkSpot.transform.rotation.eulerAngles[1]);
         // float distance_reward = -t_distance / MaxDistance;
         // float angle_reward = -t_angle / MaxAngle;
-        float distance_reward = (p_distance - t_distance) / MaxDistance * 100;
-        float angle_reward = (p_angle - t_angle) / MaxAngle *50;
+        float distance_reward = (p_distance - t_distance) / MaxDistance * 1000;
+        float angle_reward = (p_angle - t_angle) / MaxAngle ;
         
         AddReward(distance_reward + angle_reward);
         Debug.Log(distance_reward + angle_reward);
