@@ -43,7 +43,7 @@ public class RosAgent : Agent
 
     public override void OnEpisodeBegin()
     {
-        // updateRosSub();
+        updateRosSub();
         m_CarRb.transform.position = new Vector3(0, 2, -2);
         m_CarRb.transform.rotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
         m_MyArea.ResetObject();
@@ -60,7 +60,7 @@ public class RosAgent : Agent
         p_angle = t_angle;
         p_distance = t_distance;
 
-        // InvokeRepeating("updateRosSub", 1,1);
+        InvokeRepeating("updateRosSub", 1,1);
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -136,11 +136,11 @@ public class RosAgent : Agent
     }
 
 
-    // private void FixedUpdate()
-    // {
-    //     rosPub.Publish(m_CarRb.velocity,m_CarRb.angularVelocity);
-    //     // updateRosSub();
-    // }
+    private void FixedUpdate()
+    {
+        rosPub.Publish(m_CarRb.velocity,m_CarRb.angularVelocity);
+        // updateRosSub();
+    }
 
 
     private void updateRosSub()

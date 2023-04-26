@@ -154,7 +154,7 @@ public class Park : Agent
         Vector3 CarRota = m_Car.transform.rotation.eulerAngles;
         float speed = Math.Abs(m_Car.ForwardSpeed);
         float angle = Math.Abs(CarRota[1] - 270);
-        if (t_distance < 1.8 && speed < 0.5 && angle < 8)
+        if (t_distance < 2.8 && speed < 1.5 && angle < 18)
         {
             Debug.Log("success");
             AddReward(2000);

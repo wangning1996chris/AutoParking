@@ -154,7 +154,7 @@ public class Shovel : Agent
         float angle = Math.Abs(CarRota[1] - 306);
         // Debug.Log("distance"+t_distance);
         // Debug.Log("angle"+m_Car.transform.rotation.eulerAngles[1]);
-        if (t_distance < 2.8 && speed < 2.5 && angle < 28)
+        if (t_distance < 2.8 && speed < 1.5 && angle < 18)
         {
             Debug.Log("success");
             AddReward(2000);
