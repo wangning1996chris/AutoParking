@@ -16,9 +16,11 @@ using System.IO;
 public class SingleAbsAgentArea : MonoBehaviour
 {
     public GameObject[] AreaList;
+    public GameObject[] DynGateList;
     public GameObject m_Goal;
     public SingleAbsAgent m_Agent;
     public int areaId;
+    public int gateLen;
     private Rigidbody m_AgentRb;
     private List<(int, int)> PosDeltaList;
     private float[] GoalFlag, AgentFlag;
@@ -29,44 +31,67 @@ public class SingleAbsAgentArea : MonoBehaviour
     {
         m_AgentRb = m_Agent.GetComponent<Rigidbody>();
         PosDeltaList = new List<(int x, int y)> {(16, 16), (-16, 16), (-16, -16), (16, -16)};
-        GrapghInfo = new GraphMatrixStructure();
-        GrapghInfo.InitGraphMatrix();
         g_index = -1;
         a_index = -1;
     }
 
     public void ResetObject()
-    {
-        float xRange, zRange;
-        var enumerableA = Enumerable.Range(0, areaId).OrderBy(x => Guid.NewGuid()).Take(1);
-        var itemsA = enumerableA.ToArray();
-        // Reset Goal
-        g_index = areaId * areaId - 1; // Fixed Position of Goal to Speed up Learning
-        var g_spawnTransform = AreaList[g_index].transform;
-        xRange = g_spawnTransform.localScale.x / 3.5f;
-        zRange = g_spawnTransform.localScale.z / 3.5f;
+    {   
+        while(true)
+        {
+            // Reset Graph
+            GrapghInfo = new GraphMatrixStructure();
+            GrapghInfo.InitGraphMatrix();
+            
+            // Updata Gates
+            foreach (var gate in DynGateList)
+            {
+                gate.SetActive(true);
+            }
+            var enumerableG = Enumerable.Range(0, gateLen).OrderBy(x => Guid.NewGuid()).Take(gateLen * 2 / 3);
+            var itemsG = enumerableG.ToArray();
+            foreach (var item in itemsG)
+            {
+                DynGateList[item].SetActive(false);
+            }
+            GrapghInfo.UpdateGraphMatrix(itemsG, gateLen, areaId);
 
-        m_Goal.transform.position = new Vector3(Random.Range(-xRange, xRange), 1f, Random.Range(-zRange, zRange))
-            + g_spawnTransform.position;
-        
-        GoalFlag = GrapghInfo.GetEncoder(g_index);
+            // Init Var
+            float xRange, zRange;
+            var enumerableA = Enumerable.Range(0, areaId).OrderBy(x => Guid.NewGuid()).Take(1);
+            var itemsA = enumerableA.ToArray();
+            // Reset Goal
+            g_index = areaId * areaId - 1; // Fixed Position of Goal to Speed up Learning
+            var g_spawnTransform = AreaList[g_index].transform;
+            xRange = g_spawnTransform.localScale.x / 3.5f;
+            zRange = g_spawnTransform.localScale.z / 3.5f;
 
-        // Reset Agent
-        a_index = itemsA[0]; // Fixed Position of Agent to Speed up Learning
-        var a_spawnTransform = AreaList[a_index].transform;
-        xRange = a_spawnTransform.localScale.x / 3.5f;
-        zRange = a_spawnTransform.localScale.z / 3.5f;
+            m_Goal.transform.position = new Vector3(Random.Range(-xRange, xRange), 1f, Random.Range(-zRange, zRange))
+                + g_spawnTransform.position;
+            
+            GoalFlag = GrapghInfo.GetEncoder(g_index);
 
-        m_AgentRb.transform.position = new Vector3(Random.Range(-xRange, xRange), 0f, Random.Range(-zRange, zRange))
-            + a_spawnTransform.position;
-        m_AgentRb.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f));
-        m_AgentRb.velocity = Vector3.zero;
-        m_AgentRb.angularVelocity = Vector3.zero;
+            // Reset Agent
+            a_index = itemsA[0]; // Fixed Position of Agent to Speed up Learning
+            var a_spawnTransform = AreaList[a_index].transform;
+            xRange = a_spawnTransform.localScale.x / 3.5f;
+            zRange = a_spawnTransform.localScale.z / 3.5f;
 
-        AgentFlag = GrapghInfo.GetEncoder(a_index);
+            m_AgentRb.transform.position = new Vector3(Random.Range(-xRange, xRange), 0f, Random.Range(-zRange, zRange))
+                + a_spawnTransform.position;
+            m_AgentRb.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f));
+            m_AgentRb.velocity = Vector3.zero;
+            m_AgentRb.angularVelocity = Vector3.zero;
+
+            AgentFlag = GrapghInfo.GetEncoder(a_index);
+
+            // Reachable
+            if (CalcuMetric(AgentFlag, GoalFlag) < 1000)
+            {
+                break;
+            }
+        }
     }
-
-
     // public void SetGoalPos(GameObject goal)
     // {
     //     int index = Random.Range(0, AreaList.Length);
@@ -163,26 +188,72 @@ public class SingleAbsAgentArea : MonoBehaviour
 
 public class GraphMatrixStructure
 {
-    private const int Graph_Len = 36;
-    private string Graph_Path = "D:\\CODE\\python\\AutoPark_Lib\\Assets\\Examples\\MAPD\\Script\\Exp_Agent\\Matrix-36.txt";
+    private const int Graph_Len = 9;
+    // private string Graph_Path = "D:\\CODE\\python\\AutoPark_Lib\\Assets\\Examples\\MAPD\\Script\\Exp_Agent\\Matrix-9.txt";
     private float [, ] GraphMatrix = new float[Graph_Len, Graph_Len];
     
     public void InitGraphMatrix()
     {
-        string[] lines = File.ReadAllLines(Graph_Path);
+        // string[] lines = File.ReadAllLines(Graph_Path);
+        // for (int i = 0; i < Graph_Len; i++)
+        // {
+        //     string[] StrValue = lines[i].Split('\t');
+        //     for (int j = 0; j < Graph_Len; j++)
+        //     {
+        //         float FloatValue = float.Parse(StrValue[j]);
+        //         // Not Connected
+        //         if (FloatValue == -1)
+        //         {
+        //             FloatValue = int.MaxValue;
+        //         }
+        //         GraphMatrix[i, j] = FloatValue;
+        //     }
+        // }
         for (int i = 0; i < Graph_Len; i++)
         {
-            string[] StrValue = lines[i].Split('\t');
             for (int j = 0; j < Graph_Len; j++)
             {
-                float FloatValue = float.Parse(StrValue[j]);
-                // Not Connected
-                if (FloatValue == -1)
+                if (i == j)
                 {
-                    FloatValue = int.MaxValue;
+                    GraphMatrix[i, j] = 0;
                 }
-                GraphMatrix[i, j] = FloatValue;
+                else
+                {
+                    GraphMatrix[i, j] = int.MaxValue;
+                }
             }
+        }
+    }
+
+    public void UpdateGraphMatrix(int[] GateNumList, int gateLen, int areaId)
+    {
+        int Boundary = gateLen / 2;
+        int i,j;
+        int index_mod, index_dev, index_head;
+        Debug.Log(GateNumList.Length);
+        foreach (int index in GateNumList)
+        {
+            i = -1;
+            j = -1;
+            if (index < Boundary) 
+            // Row
+            {
+                index_mod = index % (areaId-1);
+                index_dev = index / (areaId-1);
+                i = index_dev * areaId + index_mod;
+                j = i + 1;
+            }
+            else 
+            // Col
+            {
+                index_head = index - Boundary;
+                i = index_head;
+                j = index_head + areaId;
+            }
+            // string strN = i.ToString() + j.ToString() + index.ToString();
+            // Debug.Log(strN);
+            GraphMatrix[i, j] = 1;
+            GraphMatrix[j, i] = 1;
         }
     }
     

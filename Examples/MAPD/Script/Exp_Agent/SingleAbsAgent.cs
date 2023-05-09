@@ -32,8 +32,8 @@ public class SingleAbsAgent : Agent
         sensor.AddObservation(m_CarRb.transform.position);
         sensor.AddObservation(Goal.transform.position);
         // graph encoder 
-        sensor.AddObservation(AgentFlag);
-        sensor.AddObservation(GoalFlag);
+        // sensor.AddObservation(AgentFlag);
+        // sensor.AddObservation(GoalFlag);
     }
 
     public override void OnEpisodeBegin()
@@ -60,7 +60,7 @@ public class SingleAbsAgent : Agent
         AddReward(-1 * E_metric);
 
         // string DebugInfo = string.Join(",", AgentFlag);
-        // Debug.Log(E_metric * e_dist);
+        Debug.Log(E_metric * e_dist);
         // Debug.Log(D_metric);
         // Debug.Log(DebugInfo);
 
