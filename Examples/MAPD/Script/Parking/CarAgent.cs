@@ -39,9 +39,7 @@ public class CarAgent : Agent
     private List<Vector3> pos = new List<Vector3>();
     private float timer;
 
-    // connect with ros
-    public RosPublisher rosPub;
-    public RosSubscriber rosSub;
+
 
     public override void Initialize()
     {
@@ -86,7 +84,7 @@ public class CarAgent : Agent
         p_distance = t_distance;
 
         //drwa line
-        lineObject = Instantiate(emptyPrefab, m_Car.transform.position, Quaternion.identity, gameObject.transform);
+        // lineObject = Instantiate(emptyPrefab, m_Car.transform.position, Quaternion.identity, gameObject.transform);
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -126,10 +124,10 @@ public class CarAgent : Agent
         actions[1] = Mathf.RoundToInt(Input.GetAxis("Vertical"));
         actions[2] = Mathf.RoundToInt(Input.GetAxis("Jump"));
 
-        // ROS Connect
-        rosPub.Update();
-        float[] posList = rosSub.UpdatePos();
-        string laserScan = rosSub.UpdateScan();
+        // // ROS Connect
+        // rosPub.Update();
+        // float[] posList = rosSub.UpdatePos();
+        // string laserScan = rosSub.UpdateScan();
     }
 
     private void FixedUpdate()
@@ -149,22 +147,22 @@ public class CarAgent : Agent
         int g_y = (int)Math.Round(curr_Goal_Pos[2]);
         // updateSenorAround(Goal, g_x, g_y);
 
-        //drwa line
-        if (timer <= 0)
-        {
-            currentline = Instantiate(lineprefab,m_Car.transform.position, Quaternion.identity, lineObject.transform);
-            line = currentline.GetComponentInChildren<LineRenderer>();
-            pos.Add(m_Car.transform.position);
-            path = pos.ToArray();
-            timer = 0.1f;
-        }
-        timer -= Time.deltaTime;
+        // //drwa line
+        // if (timer <= 0)
+        // {
+        //     currentline = Instantiate(lineprefab,m_Car.transform.position, Quaternion.identity, lineObject.transform);
+        //     line = currentline.GetComponentInChildren<LineRenderer>();
+        //     pos.Add(m_Car.transform.position);
+        //     path = pos.ToArray();
+        //     timer = 0.1f;
+        // }
+        // timer -= Time.deltaTime;
 
-        if (path.Length != 0)
-        {
-            line.positionCount = path.Length;
-            line.SetPositions(path);
-        }
+        // if (path.Length != 0)
+        // {
+        //     line.positionCount = path.Length;
+        //     line.SetPositions(path);
+        // }
 
         // Cmd Out to Ros
 
@@ -196,20 +194,20 @@ public class CarAgent : Agent
         {
             Debug.Log("success");
             AddReward(2000);
-            pos.Clear();
-            path = pos.ToArray();
-            Destroy(lineObject);
+            // pos.Clear();
+            // path = pos.ToArray();
+            // Destroy(lineObject);
             EndEpisode();
         }
 
         // Failed: out of space
-        if (!Physics.Raycast(m_Car.transform.position, Vector3.down, 3f) || t_y_pos < 1)
+        if (!Physics.Raycast(m_Car.transform.position, Vector3.down, 3f) || t_y_pos < 0)
         {
             Debug.Log("out");
             AddReward(-1000);
-            pos.Clear();
-            path = pos.ToArray();
-            Destroy(lineObject);
+            // pos.Clear();
+            // path = pos.ToArray();
+            // Destroy(lineObject);
             EndEpisode();
         }
 
@@ -225,9 +223,9 @@ public class CarAgent : Agent
             {
                 Debug.Log("collision");
                 AddReward(-1000);
-                pos.Clear();
-                path = pos.ToArray();
-                Destroy(lineObject);
+                // pos.Clear();
+                // path = pos.ToArray();
+                // Destroy(lineObject);
                 EndEpisode();  
                 break;
             }

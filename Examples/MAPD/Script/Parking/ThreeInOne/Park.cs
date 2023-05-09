@@ -50,7 +50,7 @@ public class Park : Agent
         Destination = new Vector3(174, 1, 150);
 
         // reset agent
-        m_Car.transform.position = new Vector3(145, 1, 160)+new Vector3(UnityEngine.Random.Range(-10, 10), 0, UnityEngine.Random.Range(-10, 10));
+        m_Car.transform.position = new Vector3(147, 1, 155)+new Vector3(UnityEngine.Random.Range(-5, 5), 0, UnityEngine.Random.Range(-5, 5));
         m_Car.transform.rotation = Quaternion.Euler(new Vector3(0f, UnityEngine.Random.Range(-15, 15), 0f));
         // var xRange = 5;
         // var zRange = 10;
@@ -63,7 +63,7 @@ public class Park : Agent
         // reset distance
         MaxDistance = (m_Car.transform.position - Destination).magnitude;
         t_distance = (m_Car.transform.position - Destination).magnitude;
-        MaxAngle = Math.Abs(m_Car.transform.rotation.eulerAngles[1] - 270);
+        MaxAngle = 270;
         t_angle = Math.Abs(m_Car.transform.rotation.eulerAngles[1] - 270);
 
         // reset p_value
@@ -78,8 +78,7 @@ public class Park : Agent
         sensor.AddObservation(m_Car.NormSteer);
         sensor.AddObservation(Normalization.Sigmoid(m_Car.LocalSpin));
         sensor.AddObservation(Normalization.Sigmoid(m_Car.LocalVelocity));
-        sensor.AddObservation(m_Car.transform.position);
-        sensor.AddObservation(Destination);
+        sensor.AddObservation(Destination-m_Car.transform.position);
     }
     
     public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -97,7 +96,7 @@ public class Park : Agent
         // float angle_reward = (p_angle - t_angle) / MaxAngle *50;
         
         AddReward(distance_reward * 2 + angle_reward);
-        Debug.Log(distance_reward + angle_reward);
+        Debug.Log(distance_reward * 2 + angle_reward);
 
         p_distance = t_distance;
         p_angle = t_angle;
@@ -112,25 +111,24 @@ public class Park : Agent
 
     }
 
-    private void FixedUpdate()
-    {
-        // m_SensorBuffer.Clear();
+    // private void FixedUpdate()
+    // {
+    //     // m_SensorBuffer.Clear();
         
-        // Agent
-        Vector3 curr_Agent_Pos =  m_Car.transform.position;
-        int a_x = (int)Math.Round(curr_Agent_Pos[0]);
-        int a_y = (int)Math.Round(curr_Agent_Pos[2]);
-        t_y_pos = curr_Agent_Pos[1];
-        // updateSenorAround(Agent, a_x, a_y);
+    //     // Agent
+    //     Vector3 curr_Agent_Pos =  m_Car.transform.position;
+    //     int a_x = (int)Math.Round(curr_Agent_Pos[0]);
+    //     int a_y = (int)Math.Round(curr_Agent_Pos[2]);
+    //     t_y_pos = curr_Agent_Pos[1];
+    //     // updateSenorAround(Agent, a_x, a_y);
         
-        // Goal
-        Vector3 curr_Goal_Pos =  Destination;
-        int g_x = (int)Math.Round(curr_Goal_Pos[0]);
-        int g_y = (int)Math.Round(curr_Goal_Pos[2]);
-        // updateSenorAround(Goal, g_x, g_y);
+    //     // Goal
+    //     Vector3 curr_Goal_Pos =  Destination;
+    //     int g_x = (int)Math.Round(curr_Goal_Pos[0]);
+    //     int g_y = (int)Math.Round(curr_Goal_Pos[2]);
+    //     // updateSenorAround(Goal, g_x, g_y);
 
-
-    }
+    // }
 
 
     // private void updateSenorAround(int Flag, int x, int y)
@@ -154,6 +152,8 @@ public class Park : Agent
         Vector3 CarRota = m_Car.transform.rotation.eulerAngles;
         float speed = Math.Abs(m_Car.ForwardSpeed);
         float angle = Math.Abs(CarRota[1] - 270);
+        // Debug.Log("distance"+t_distance);
+        // Debug.Log("angle"+m_Car.transform.rotation.eulerAngles[1]);
         if (t_distance < 2.8 && speed < 1.5 && angle < 18)
         {
             Debug.Log("success");
@@ -161,22 +161,23 @@ public class Park : Agent
             EndEpisode();
         }
 
-        // Failed: out of space
-        if (!Physics.Raycast(m_Car.transform.position, Vector3.down, 3f) || t_y_pos < 1)
-        {
-            Debug.Log("out");
-            AddReward(-1000);
-            EndEpisode();
-        }
+        // // Failed: out of space
+        // if (!Physics.Raycast(m_Car.transform.position, Vector3.down, 3f) || t_y_pos < 1)
+        // {
+        //     Debug.Log("out");
+        //     AddReward(-1000);
+        //     EndEpisode();
+        // }
 
         // Failed: Collision
         Vector3 RayPos = m_Car.transform.position  + new Vector3(0, 1, 0);
-        for (int i = 0; i < RayNum-1; i ++)
+        for (int i = 0; i < RayNum; i ++)
         {
             float subAngle = -(360 / RayNum) * i;
             Quaternion q = Quaternion.AngleAxis(subAngle, Vector3.up);
             Vector3 forward = q * m_Car.transform.TransformDirection(Vector3.forward);
-             //调整射线长度，使长方形车身前后与左右方向探测距离相等
+            Debug.DrawRay(RayPos, forward * 3, Color.green);
+            //调整射线长度，使长方形车身前后与左右方向探测距离相等
             float rayLength;
             if(i<=2 || i>= RayNum-3){ //前方
                 rayLength = 2.5f;
