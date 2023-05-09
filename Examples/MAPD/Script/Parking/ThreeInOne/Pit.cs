@@ -50,12 +50,13 @@ public class Pit : Agent
 
     public override void OnEpisodeBegin()
     {
-        int random_num = UnityEngine.Random.Range(0,3);
+        // int random_num = UnityEngine.Random.Range(0,3);
+        int random_num = 0;
         switch(random_num)
         {
             case 0:  //start to park
-                Destination = new Vector3(145, 1, 160);
-                ParkSpot.transform.position = new Vector3(145, 1, 160);
+                Destination = new Vector3(145, 1, 150);
+                ParkSpot.transform.position = new Vector3(145, 0, 150);
                 ParkSpot.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
                 m_Car.transform.position = new Vector3(-135, 1, 3)+new Vector3(UnityEngine.Random.Range(-10, 10), 0, UnityEngine.Random.Range(-10, 10));
                 m_Car.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0)+new Vector3(0f, UnityEngine.Random.Range(-15, 15), 0f));
@@ -98,8 +99,7 @@ public class Pit : Agent
         sensor.AddObservation(m_Car.NormSteer);
         sensor.AddObservation(Normalization.Sigmoid(m_Car.LocalSpin));
         sensor.AddObservation(Normalization.Sigmoid(m_Car.LocalVelocity));
-        sensor.AddObservation(m_Car.transform.position);
-        sensor.AddObservation(Destination);
+        sensor.AddObservation(Destination-m_Car.transform.position);
     }
     
     public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -168,7 +168,7 @@ public class Pit : Agent
         Vector3 CarRota = m_Car.transform.rotation.eulerAngles;
         float speed = Math.Abs(m_Car.ForwardSpeed);
         float angle = Math.Abs(CarRota[1] - 270);
-        if (t_distance < 3.5 && speed < 1.5 && angle<18) 
+        if (t_distance < 3.5 && speed < 1.5) 
         {
             Debug.Log("success");
             AddReward(2000);
