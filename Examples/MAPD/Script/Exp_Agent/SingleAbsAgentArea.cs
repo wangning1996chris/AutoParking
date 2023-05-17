@@ -48,7 +48,7 @@ public class SingleAbsAgentArea : MonoBehaviour
             {
                 gate.SetActive(true);
             }
-            var enumerableG = Enumerable.Range(0, gateLen).OrderBy(x => Guid.NewGuid()).Take(gateLen * 2 / 3);
+            var enumerableG = Enumerable.Range(0, gateLen).OrderBy(x => Guid.NewGuid()).Take(gateLen * 5 / 6);
             var itemsG = enumerableG.ToArray();
             foreach (var item in itemsG)
             {
@@ -58,7 +58,7 @@ public class SingleAbsAgentArea : MonoBehaviour
 
             // Init Var
             float xRange, zRange;
-            var enumerableA = Enumerable.Range(0, areaId).OrderBy(x => Guid.NewGuid()).Take(1);
+            var enumerableA = Enumerable.Range(0, areaId * areaId - 1).OrderBy(x => Guid.NewGuid()).Take(1);
             var itemsA = enumerableA.ToArray();
             // Reset Goal
             g_index = areaId * areaId - 1; // Fixed Position of Goal to Speed up Learning
@@ -188,7 +188,7 @@ public class SingleAbsAgentArea : MonoBehaviour
 
 public class GraphMatrixStructure
 {
-    private const int Graph_Len = 9;
+    private const int Graph_Len = 16;
     // private string Graph_Path = "D:\\CODE\\python\\AutoPark_Lib\\Assets\\Examples\\MAPD\\Script\\Exp_Agent\\Matrix-9.txt";
     private float [, ] GraphMatrix = new float[Graph_Len, Graph_Len];
     

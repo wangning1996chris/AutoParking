@@ -32,8 +32,8 @@ public class SingleAbsAgent : Agent
         sensor.AddObservation(m_CarRb.transform.position);
         sensor.AddObservation(Goal.transform.position);
         // graph encoder 
-        // sensor.AddObservation(AgentFlag);
-        // sensor.AddObservation(GoalFlag);
+        sensor.AddObservation(AgentFlag);
+        sensor.AddObservation(GoalFlag);
     }
 
     public override void OnEpisodeBegin()
