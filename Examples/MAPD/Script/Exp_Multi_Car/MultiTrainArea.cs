@@ -25,6 +25,7 @@ public class MultiTrainArea : Area
     }
     public List<PlayerInfo> AgentsList = new List<PlayerInfo>();
     private SimpleMultiAgentGroup m_AgentGroup;
+    private int parkCarNum;
 
     void Start()
     {
@@ -39,6 +40,7 @@ public class MultiTrainArea : Area
 
     public void ResetObject()
     {
+        parkCarNum = 0; 
         int len_trucks = TruckList.Length;
         int len_agents = GoalList.Length;
         var enumerable = Enumerable.Range(0, len_trucks).OrderBy(x => Guid.NewGuid()).Take(len_agents);
@@ -74,9 +76,12 @@ public class MultiTrainArea : Area
     {
         foreach (var item in AgentsList)
         {
-            item.Agent.IsEndEpisode();
+            bool endFlag = item.Agent.IsEndEpisode();
+            if (parkCarNum == GoalList.Length || endFlag)
+            {
+                m_AgentGroup.EndGroupEpisode();
+            }
         }
-        // m_AgentGroup.AddGroupReward(-100 / MaxStep);
     }
 
     public void AddGroupRewardAsValue(float reward)
@@ -87,6 +92,7 @@ public class MultiTrainArea : Area
     public void AgentIsSucceed(int index)
     {
         AgentsList[index].Agent.gameObject.SetActive(false);
+        parkCarNum += 1;
     }
 
 }

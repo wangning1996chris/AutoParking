@@ -57,7 +57,6 @@ public class MultiCarAgent : Agent
     {
         var actions = actionBuffers.ContinuousActions;
         m_Car.Move(actions[0], actions[1]*200, actions[1], actions[2]);
-        IsEndEpisode();
 
         t_distance = (m_Car.transform.position - Destination).magnitude;
         t_angle = Math.Abs(m_Car.transform.rotation.eulerAngles[1] - 270);
@@ -77,9 +76,10 @@ public class MultiCarAgent : Agent
         actions[2] = Mathf.RoundToInt(Input.GetAxis("Jump"));
     }
 
-    public void IsEndEpisode()
+    public bool IsEndEpisode()
     {
         // Success
+        bool flag = false;
         Vector3 CarRota = m_Car.transform.rotation.eulerAngles;
         float speed = Math.Abs(m_Car.ForwardSpeed);
         float angle = Math.Abs(CarRota[1] - 270);
@@ -93,8 +93,8 @@ public class MultiCarAgent : Agent
         if (!Physics.Raycast(m_Car.transform.position, Vector3.down, 3f))
         {
             Debug.Log("out");
-            m_MyArea.AddGroupRewardAsValue(-1000);
-            EndEpisode();
+            m_MyArea.AddGroupRewardAsValue(-5000);
+            flag = true;
         }
 
         // Failed: Collision
@@ -108,10 +108,10 @@ public class MultiCarAgent : Agent
             if (Physics.Raycast(RayPos, forward, 2.2f))
             {
                 Debug.Log("collision");
-                m_MyArea.AddGroupRewardAsValue(-1000);
+                m_MyArea.AddGroupRewardAsValue(-500);
                 break;
             }
         }
-
+        return flag;
     }
 }
