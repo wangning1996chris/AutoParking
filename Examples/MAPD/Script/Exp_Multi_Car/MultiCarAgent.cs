@@ -93,10 +93,9 @@ public class MultiCarAgent : Agent
         if (!Physics.Raycast(m_Car.transform.position, Vector3.down, 3f))
         {
             Debug.Log("out");
-            m_MyArea.AddGroupRewardAsValue(-5000);
+            m_MyArea.AddGroupRewardAsValue(-20000);
             flag = true;
         }
-
         // Failed: Collision
         Vector3 RayPos = m_Car.transform.position  + new Vector3(0, 1, 0);
         for (int i = 0; i < RayNum-1; i ++)
@@ -105,10 +104,11 @@ public class MultiCarAgent : Agent
             Quaternion q = Quaternion.AngleAxis(subAngle, Vector3.up);
             Vector3 forward = q * m_Car.transform.TransformDirection(Vector3.forward);
             Debug.DrawRay(RayPos, forward * 3, Color.green);
-            if (Physics.Raycast(RayPos, forward, 2.2f))
+            if (Physics.Raycast(RayPos, forward, 2.5f))
             {
                 Debug.Log("collision");
-                m_MyArea.AddGroupRewardAsValue(-500);
+                m_MyArea.AddGroupRewardAsValue(-20000);
+                flag = true;
                 break;
             }
         }

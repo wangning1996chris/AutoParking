@@ -35,7 +35,7 @@ public class MultiTrainArea : Area
             item.Rb = item.Agent.GetComponentInChildren<Rigidbody>();
             m_AgentGroup.RegisterAgent(item.Agent);
         }
-        ResetObject();
+        // ResetObject();
     }
 
     public void ResetObject()
@@ -43,7 +43,7 @@ public class MultiTrainArea : Area
         parkCarNum = 0; 
         int len_trucks = TruckList.Length;
         int len_agents = GoalList.Length;
-        var enumerable = Enumerable.Range(0, len_trucks).OrderBy(x => Guid.NewGuid()).Take(len_agents);
+        var enumerable = Enumerable.Range(1, len_trucks-2).OrderBy(x => Guid.NewGuid()).Take(len_agents);
         var items = enumerable.ToArray();
 
         // reset trcuk
@@ -60,12 +60,17 @@ public class MultiTrainArea : Area
             TruckList[truckIndex].SetActive(false);
         }
         // reset agent
+        // TODO position is not right
+        int ID = Random.Range(0, 5);
+        var PosList = Enumerable.Range(0, len_agents).Take(len_agents).ToArray();
+        float[,] z_pos = new float [6,3] {{-14, 0, 14}, {0, -14, 14}, {-14, 14, 0}, {14, 0, -14}, {0, 14, -14}, {14, -14, 0}};
         foreach (var item in AgentsList)
         {
             item.Agent.gameObject.SetActive(true);
-            int delta = AgentsList.IndexOf(item) * 10;
+            int index = AgentsList.IndexOf(item);
             var xRange = 5;
             var zRange = 5;
+            item.Rb.transform.position = new Vector3(-6f, 1f, z_pos[ID,index]);
             item.Rb.transform.rotation = Quaternion.Euler(new Vector3(0f, UnityEngine.Random.Range(-30, 30), 0f));
             item.Rb.velocity = Vector3.zero;
             item.Rb.angularVelocity = Vector3.zero;
