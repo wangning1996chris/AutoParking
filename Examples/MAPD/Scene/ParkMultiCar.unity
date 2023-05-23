@@ -802,7 +802,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 654132731}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1.4}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -827,7 +827,7 @@ PrefabInstance:
     - target: {fileID: 519996281595981360, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5022602860645237092, guid: 8701622dbca4bcb40bd382fd47b8718f, type: 3}
     - target: {fileID: 519996281595981360, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_BehaviorName
       value: Driver
@@ -862,15 +862,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981367, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12.8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981367, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -28.24444
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981367, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.09
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981367, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1014,7 +1014,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1275171731712942125, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_Topspeed
-      value: 40
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1275171731712942125, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_SpeedType
@@ -1281,7 +1281,7 @@ MonoBehaviour:
   - {r: 0.5754717, g: 0.12886801, b: 0.04071733, a: 0}
   - {r: 0.5754717, g: 0.12886801, b: 0.04071733, a: 0}
   m_GizmoYOffset: 0
-  m_ShowGizmos: 1
+  m_ShowGizmos: 0
   m_CompressionType: 1
   m_ObservationStacks: 1
 --- !u!65 &670962788
@@ -1565,7 +1565,7 @@ PrefabInstance:
     - target: {fileID: 519996281595981360, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5022602860645237092, guid: 8701622dbca4bcb40bd382fd47b8718f, type: 3}
     - target: {fileID: 519996281595981360, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_BehaviorName
       value: Driver
@@ -1600,15 +1600,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981367, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12.8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981367, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -28.24444
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981367, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.6
+      value: -5.15
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981367, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1752,7 +1752,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1275171731712942125, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_Topspeed
-      value: 40
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1275171731712942125, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_SpeedType
@@ -2019,7 +2019,7 @@ MonoBehaviour:
   - {r: 0.5754717, g: 0.12886801, b: 0.04071733, a: 0}
   - {r: 0.5754717, g: 0.12886801, b: 0.04071733, a: 0}
   m_GizmoYOffset: 0
-  m_ShowGizmos: 1
+  m_ShowGizmos: 0
   m_CompressionType: 1
   m_ObservationStacks: 1
 --- !u!65 &893956236
@@ -2913,7 +2913,7 @@ PrefabInstance:
     - target: {fileID: 519996281595981360, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5022602860645237092, guid: 8701622dbca4bcb40bd382fd47b8718f, type: 3}
     - target: {fileID: 519996281595981360, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_BehaviorName
       value: Driver
@@ -2948,15 +2948,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981367, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12.8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981367, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -28.24444
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981367, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 28.25
+      value: 5.33
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981367, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3100,7 +3100,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1275171731712942125, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_Topspeed
-      value: 40
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1275171731712942125, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_SpeedType
@@ -4410,7 +4410,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2140972961}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.3017335, y: 29.24444, z: -10.791506}
+  m_LocalPosition: {x: 0, y: 4.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
