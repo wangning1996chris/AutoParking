@@ -29,6 +29,17 @@ public class Shovel : Agent
     private float t_y_pos;
     private const int RayNum = 18;
 
+      //draw line 
+    public GameObject lineprefab;
+    public GameObject currentline;
+    public GameObject emptyPrefab;
+    public GameObject lineObject;
+    public LineRenderer line;
+    private Vector3[] path;
+    private List<Vector3> pos = new List<Vector3>();
+    private List<Vector3[]> paths = new List<Vector3[]>();
+    private float timer;
+
     public override void Initialize()
     {
         m_Car = GetComponentInChildren<CarController>();
@@ -69,7 +80,8 @@ public class Shovel : Agent
         p_angle = t_angle;
         p_distance = t_distance;
 
-    
+         //drwa line
+        lineObject = Instantiate(emptyPrefab, m_Car.transform.position, Quaternion.identity, gameObject.transform);
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -111,24 +123,30 @@ public class Shovel : Agent
 
     }
 
-    // private void FixedUpdate()
-    // {
-    //     // m_SensorBuffer.Clear();
-        
-    //     // Agent
-    //     Vector3 curr_Agent_Pos =  m_Car.transform.position;
-    //     int a_x = (int)Math.Round(curr_Agent_Pos[0]);
-    //     int a_y = (int)Math.Round(curr_Agent_Pos[2]);
-    //     t_y_pos = curr_Agent_Pos[1];
-    //     // updateSenorAround(Agent, a_x, a_y);
-        
-    //     // Goal
-    //     Vector3 curr_Goal_Pos =  Destination;
-    //     int g_x = (int)Math.Round(curr_Goal_Pos[0]);
-    //     int g_y = (int)Math.Round(curr_Goal_Pos[2]);
-    //     // updateSenorAround(Goal, g_x, g_y);
+    private void FixedUpdate()
+    {
+           //drwa line
+        if (timer <= 0)
+        {
+            currentline = Instantiate(lineprefab,m_Car.transform.position, Quaternion.identity, lineObject.transform);
+            line = currentline.GetComponentInChildren<LineRenderer>();
+            pos.Add(m_Car.transform.position);
+            path = pos.ToArray();
+            timer = 0.1f;
+        }
+        timer -= Time.deltaTime;
 
-    // }
+        if (path.Length != 0)
+        {
+            line.positionCount = path.Length;
+            line.SetPositions(path);
+            foreach(Vector3[] item in paths){
+                line.positionCount = item.Length;
+                line.SetPositions(item);
+            }
+        }
+
+    }
 
 
     // private void updateSenorAround(int Flag, int x, int y)
@@ -154,8 +172,10 @@ public class Shovel : Agent
         float angle = Math.Abs(CarRota[1] - 306);
         // Debug.Log("distance"+t_distance);
         // Debug.Log("angle"+m_Car.transform.rotation.eulerAngles[1]);
-        if (t_distance < 2.8 && speed < 1.5 && angle < 18)
+        if (t_distance < 3.8 && speed < 1.5 && angle < 18)
         {
+            paths.Add(path);
+            pos = new List<Vector3>();
             Debug.Log("success");
             AddReward(2000);
             EndEpisode();
