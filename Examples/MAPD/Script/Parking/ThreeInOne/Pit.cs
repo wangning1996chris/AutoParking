@@ -109,17 +109,17 @@ public class Pit : Agent
         IsEndEpisode();
 
         t_distance = (m_Car.transform.position - Destination).magnitude;
-        t_angle = Math.Abs(m_Car.transform.rotation.eulerAngles[1] - ParkSpot.transform.rotation.eulerAngles[1]);
+
         // float distance_reward = -t_distance / MaxDistance;
         // float angle_reward = -t_angle / MaxAngle;
-        float distance_reward = (p_distance - t_distance) / MaxDistance * 1000;
-        float angle_reward = (p_angle - t_angle) / MaxAngle ;
+        float distance_reward = (p_distance - t_distance)  * 10;
+        // float angle_reward = (p_angle - t_angle) / MaxAngle ;
         
-        AddReward(distance_reward + angle_reward);
-        Debug.Log(distance_reward + angle_reward);
+        AddReward(distance_reward );
+        Debug.Log(distance_reward);
 
         p_distance = t_distance;
-        p_angle = t_angle;
+
 
         // RayPerceptionInput spec = m_RayPerceptionSensor.GetRayPerceptionInput();
         // RayPerceptionOutput obs = RayPerceptionSensor.Perceive(spec);
