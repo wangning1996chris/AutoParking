@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,6 +32,19 @@ public class Pit : Agent
 
     private float t_y_pos; //terrain y 
     private const int RayNum = 18;
+
+    private ArrayList  List  =  new  ArrayList(); 
+
+      //draw line 
+    public GameObject lineprefab;
+    public GameObject currentline;
+    public GameObject emptyPrefab;
+    public GameObject lineObject;
+    public LineRenderer line;
+    private Vector3[] path;
+    private List<Vector3> pos = new List<Vector3>();
+    private List<Vector3[]> paths = new List<Vector3[]>();
+    private float timer;
 
     public override void Initialize()
     {
@@ -91,7 +106,8 @@ public class Pit : Agent
         // reset p_value
         p_angle = t_angle;
         p_distance = t_distance;
-
+        //drwa line
+        lineObject = Instantiate(emptyPrefab, m_Car.transform.position, Quaternion.identity, gameObject.transform);
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -116,11 +132,13 @@ public class Pit : Agent
         // float angle_reward = (p_angle - t_angle) / MaxAngle ;
         
         AddReward(distance_reward );
-        Debug.Log(distance_reward);
+        // Debug.Log(distance_reward);
+        // Debug.Log(m_CarRb.velocity.magnitude);
+        List.Add(m_CarRb.velocity.magnitude);
 
         p_distance = t_distance;
 
-
+        
         // RayPerceptionInput spec = m_RayPerceptionSensor.GetRayPerceptionInput();
         // RayPerceptionOutput obs = RayPerceptionSensor.Perceive(spec);
         // RayPerceptionOutput.RayOutput rayoutput = obs.RayOutputs[0];
@@ -160,6 +178,26 @@ public class Pit : Agent
         int g_x = (int)Math.Round(curr_Goal_Pos[0]);
         int g_y = (int)Math.Round(curr_Goal_Pos[2]);
         // updateSenorAround(Goal, g_x, g_y);
+         //drwa line
+        if (timer <= 0)
+        {
+            currentline = Instantiate(lineprefab,m_Car.transform.position, Quaternion.identity, lineObject.transform);
+            line = currentline.GetComponentInChildren<LineRenderer>();
+            pos.Add(m_Car.transform.position);
+            path = pos.ToArray();
+            timer = 0.1f;
+        }
+        timer -= Time.deltaTime;
+
+        if (path.Length != 0)
+        {
+            line.positionCount = path.Length;
+            line.SetPositions(path);
+            foreach(Vector3[] item in paths){
+                line.positionCount = item.Length;
+                line.SetPositions(item);
+            }
+        }
     }
 
     private void IsEndEpisode()
@@ -169,7 +207,16 @@ public class Pit : Agent
         float speed = Math.Abs(m_Car.ForwardSpeed);
         float angle = Math.Abs(CarRota[1] - 270);
         if (t_distance < 3.5 && speed < 1.5) 
-        {
+        {   
+            // using (StreamWriter sw = new StreamWriter("names.txt"))
+            // {
+            //     foreach (float  item in List)
+            //     {
+            //         sw.WriteLine(item);
+            //     }
+            // }
+            paths.Add(path);
+            pos = new List<Vector3>();
             Debug.Log("success");
             AddReward(2000);
             EndEpisode();
@@ -178,7 +225,7 @@ public class Pit : Agent
         // Failed: out of space
         if (!Physics.Raycast(m_Car.transform.position, Vector3.down, 3f) || t_y_pos < 0) //Attention! 1 -> 0
         {
-            Debug.Log("out");
+            // Debug.Log("out");
             AddReward(-1000);
             EndEpisode();
         }

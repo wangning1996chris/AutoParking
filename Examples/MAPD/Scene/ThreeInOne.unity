@@ -12903,20 +12903,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &909629123
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1487022258}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DecisionPeriod: 3
-  TakeActionsBetweenDecisions: 1
 --- !u!1 &910424510
 GameObject:
   m_ObjectHideFlags: 0
@@ -16901,7 +16887,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1129531490}
   m_LocalRotation: {x: -0, y: 0.28909945, z: -0, w: 0.95729905}
-  m_LocalPosition: {x: 106.11, y: 0.72, z: -246.67}
+  m_LocalPosition: {x: 106.11, y: -2, z: -246.67}
   m_LocalScale: {x: 1, y: 0.1, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -23673,7 +23659,7 @@ PrefabInstance:
     - target: {fileID: 519996281595981360, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5022602860645237092, guid: c6426288abe5f8bc4b58078145e0ad32, type: 3}
     - target: {fileID: 519996281595981360, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_BehaviorName
       value: Driver
@@ -24105,7 +24091,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1275171731722655141, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
   m_PrefabInstance: {fileID: 1487022257}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1487022261
+--- !u!114 &1487022264
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -24114,14 +24100,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1487022258}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e67746b94c06294a9fae9aacc9fa638, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agentParameters:
-    maxStep: 0
-  hasUpgradedFromAgentParameters: 1
-  MaxStep: 6000
-  ParkSpot: {fileID: 818059341}
+  DecisionPeriod: 3
+  TakeActionsBetweenDecisions: 1
 --- !u!65 &1487022265
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -29758,6 +29741,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1789251628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1487022258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fcd127fb57750b47b7df096d2bf1a2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 6000
+  lineprefab: {fileID: 592183701}
+  currentline: {fileID: 592183701}
+  emptyPrefab: {fileID: 1321469553664683742, guid: 971932b370a2b1669a9a293082864f83, type: 3}
+  lineObject: {fileID: 592183701}
+  line: {fileID: 592183702}
 --- !u!1 &1797660499
 GameObject:
   m_ObjectHideFlags: 0
