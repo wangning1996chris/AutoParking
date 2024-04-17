@@ -22,7 +22,7 @@ public class PidCar : Agent
     private float next_y;
     private float next_yaw;
     private int FrameRate = 50;
-    private float MinDistance = 2000f;
+    private float MinDistance = 2f;
     public int CarVel;
     public int MaximumSteerAngle;
     public DataTable dt;
@@ -44,7 +44,7 @@ public class PidCar : Agent
         // Reset agent
         List<float> t_pos = GetPos();
         m_Car.transform.position = new Vector3(t_pos[0], 0.6f, t_pos[1]);
-        m_Car.transform.rotation = Quaternion.Euler(new Vector3(0, t_pos[2] * 180f / (float)Math.PI, 0));
+        m_Car.transform.rotation = Quaternion.Euler(new Vector3(0, t_pos[2], 0));
         // Debug.Log(Convert.ToString(t_pos[0]));
         // Debug.Log(Convert.ToString(t_pos[1]));
 
@@ -52,7 +52,7 @@ public class PidCar : Agent
         t_pos = GetPos();
         next_x = t_pos[0];
         next_y = t_pos[1];
-        next_yaw = t_pos[2] * 180f / (float)Math.PI;
+        next_yaw = t_pos[2];
     }
 
 
@@ -76,7 +76,7 @@ public class PidCar : Agent
             List<float> t_pos = GetPos();
             next_x = t_pos[0];
             next_y = t_pos[1];
-            next_yaw = t_pos[2] * 180f / (float)Math.PI;
+            next_yaw = t_pos[2];
         }
 
         // Calculate Cmd
@@ -105,15 +105,27 @@ public class PidCar : Agent
         float now_vel = localVel.sqrMagnitude;
         Vector3 localYaw = m_Car.transform.rotation.eulerAngles;
         float now_yaw = localYaw[1];
+        if (now_yaw < 0)
+        {
+            now_yaw += 360;
+        }
 
         // calculate accel
         float accel = 2f * (CarVel - now_vel); 
 
         // calculate yaw
-        float dy = (next_yaw - now_yaw);
-        float steer = 0.2f * dy;
+        float dy = next_yaw - now_yaw;
+        if (dy < -180)
+        {
+           dy += 360;
+        }
+        else if (dy > 180)
+        {
+            dy -= 360;
+        }
+        float steer = Pi2Pi(-Math.Atan(4f * dy)) / (float)Math.PI * 180f;
 
-        Debug.Log(Convert.ToString(dy));
+        Debug.Log(Convert.ToString(steer));
 
         // update pid_cmd
         pid_cmd.Add(steer);
