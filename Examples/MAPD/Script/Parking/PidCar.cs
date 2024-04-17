@@ -18,7 +18,7 @@ public class PidCar : Agent
     private CarController m_Car;
     private Rigidbody m_CarRb;
     public float yaw_old = 0f;
-    private int FrameRate = 50;
+    private int FrameRate = 20;
     public int CarVel;
     public int MaximumSteerAngle;
     public DataTable dt;
@@ -55,6 +55,7 @@ public class PidCar : Agent
         // Stop
         if (Step >= MaxStep)
         {
+            m_Car.gameObject.SetActive(false);
             return;
         }
 
@@ -93,11 +94,9 @@ public class PidCar : Agent
         float accel = 0.3f * (CarVel - vel_now); 
 
         // calculate yaw
-        float dt = 1 / FrameRate;
-        float dy = (next_yaw - yaw_old) / (vel_now / dt);
-        float steer = Pi2Pi(-Math.Atan(4.5 * dy));
+        float dy = (next_yaw - yaw_old) * FrameRate;
+        float steer = Pi2Pi(-Math.Atan(4.5 * dy)) * 180f / (float)Math.PI;
         Debug.Log(Convert.ToString(steer));
-        Debug.Log(Convert.ToString(accel));
 
         // update pid_cmd
         pid_cmd.Add(steer);
