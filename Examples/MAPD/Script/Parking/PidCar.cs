@@ -17,8 +17,12 @@ public class PidCar : Agent
 {
     private CarController m_Car;
     private Rigidbody m_CarRb;
-    public float yaw_old = 0f;
-    private int FrameRate = 20;
+    private float yaw_old = 0f;
+    private float next_x;
+    private float next_y;
+    private float next_yaw;
+    private int FrameRate = 50;
+    private float MinDistance = 2000f;
     public int CarVel;
     public int MaximumSteerAngle;
     public DataTable dt;
@@ -35,36 +39,52 @@ public class PidCar : Agent
 
         GetPath();
         Step = 0;
-    }
-    
-    public override void OnEpisodeBegin()
-    {
         m_Car.gameObject.SetActive(true);
         
-        // reset agent
+        // Reset agent
         List<float> t_pos = GetPos();
-        float x = t_pos[0];
-        float y = t_pos[1];
-        float yaw = t_pos[2] * 180f / (float)Math.PI;
-        m_Car.transform.position = new Vector3(x, 0.6f, y);
-        m_Car.transform.rotation = Quaternion.Euler(new Vector3(0, yaw, 0));
+        m_Car.transform.position = new Vector3(t_pos[0], 0.6f, t_pos[1]);
+        m_Car.transform.rotation = Quaternion.Euler(new Vector3(0, t_pos[2] * 180f / (float)Math.PI, 0));
+        // Debug.Log(Convert.ToString(t_pos[0]));
+        // Debug.Log(Convert.ToString(t_pos[1]));
+
+        // Get Next Pos
+        t_pos = GetPos();
+        next_x = t_pos[0];
+        next_y = t_pos[1];
+        next_yaw = t_pos[2] * 180f / (float)Math.PI;
     }
+
 
     void FixedUpdate()
     {
-        // Stop
+        // Stop Agent
         if (Step >= MaxStep)
         {
             m_Car.gameObject.SetActive(false);
             return;
         }
+        
+        // Get Now Pos
+        Vector3 NowPos = m_Car.transform.position;
+        float now_x = NowPos[0];
+        float now_y = NowPos[2];
 
-        // Cal Cmd
+        float PosDistance = CalculateEuclideanDistance(now_x, now_y, next_x, next_y);
+        if (PosDistance < MinDistance)
+        {
+            List<float> t_pos = GetPos();
+            next_x = t_pos[0];
+            next_y = t_pos[1];
+            next_yaw = t_pos[2] * 180f / (float)Math.PI;
+        }
+
+        // Calculate Cmd
         List<float> t_cmd = PidCmd();
         float steer = t_cmd[0];
         float accel = t_cmd[1];
 
-        // Norm
+        // Norm Cmd
         float NormSteer = steer / MaximumSteerAngle;
         float NormAccel = accel * -1;
 
@@ -80,30 +100,24 @@ public class PidCar : Agent
         // Pid_cmd List
         List<float> pid_cmd = new List<float>();
 
-        // Get Next Pos
-        List<float> t_pos = GetPos();
-        float next_x = t_pos[0];
-        float next_y = t_pos[1];
-        float next_yaw = t_pos[2] * 180f / (float)Math.PI;
-
         // Get vel and yaw
         Vector3 localVel = m_Car.LocalVelocity;
-        float vel_now = localVel.sqrMagnitude;
+        float now_vel = localVel.sqrMagnitude;
+        Vector3 localYaw = m_Car.transform.rotation.eulerAngles;
+        float now_yaw = localYaw[1];
 
         // calculate accel
-        float accel = 0.3f * (CarVel - vel_now); 
+        float accel = 2f * (CarVel - now_vel); 
 
         // calculate yaw
-        float dy = (next_yaw - yaw_old) * FrameRate;
-        float steer = Pi2Pi(-Math.Atan(4.5 * dy)) * 180f / (float)Math.PI;
-        Debug.Log(Convert.ToString(steer));
+        float dy = (next_yaw - now_yaw);
+        float steer = 0.2f * dy;
+
+        Debug.Log(Convert.ToString(dy));
 
         // update pid_cmd
         pid_cmd.Add(steer);
         pid_cmd.Add(accel);
-
-        // update yaw_old
-        yaw_old = next_yaw;
 
         return pid_cmd;
     }
@@ -114,14 +128,8 @@ public class PidCar : Agent
         pos.Add(Convert.ToSingle(dt.Rows[Step][0]));
         pos.Add(Convert.ToSingle(dt.Rows[Step][1]));
         pos.Add(Convert.ToSingle(dt.Rows[Step][2]));
-        Step += 1;
+        Step += 2;
         return pos;
-    }
-
-    public float GetPos_i_step(int i, int j)
-    {
-        float res = Convert.ToSingle(dt.Rows[i][j]);
-        return res;
     }
 
     public void GetPath()
@@ -190,5 +198,14 @@ public class PidCar : Agent
             theta += 2 * Math.PI;
         }
         return (float)theta;
+    }
+
+    static float CalculateEuclideanDistance(float x1, float y1, float x2, float y2)
+    {
+        float deltaX = x1 - x2;
+        float deltaY = y1 - y2;
+        float sumOfSquares = deltaX * deltaX + deltaY * deltaY;
+        
+        return (float)Math.Sqrt(sumOfSquares);
     }
 }

@@ -1280,7 +1280,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981360, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_BehaviorType
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 519996281595981360, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_BrainParameters.VectorObservationSize
@@ -1473,6 +1473,10 @@ PrefabInstance:
     - target: {fileID: 1275171731716210123, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_IsTrigger
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1275171731717306031, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
+      propertyPath: m_Mass
+      value: 2500
       objectReference: {fileID: 0}
     - target: {fileID: 1275171731717306031, guid: 165592babcb3b6f438938066f825ef8c, type: 3}
       propertyPath: m_IsKinematic
@@ -1751,7 +1755,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DecisionPeriod: 3
+  DecisionPeriod: 1
   TakeActionsBetweenDecisions: 1
 --- !u!4 &1155519201 stripped
 Transform:
@@ -1773,9 +1777,9 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 369
-  CarVel: 10
-  MaximumSteerAngle: 45
+  MaxStep: 925
+  CarVel: 50
+  MaximumSteerAngle: 60
   Step: 0
 --- !u!1 &1395468970
 GameObject:
