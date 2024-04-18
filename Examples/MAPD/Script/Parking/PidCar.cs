@@ -22,13 +22,17 @@ public class PidCar : Agent
     private float next_y;
     private float next_yaw;
     private int FrameRate = 50;
-    private float MinDistance = 2f;
+    private float MinDistance = 1f;
     public int CarVel;
+    [HideInInspector]
     public int MaximumSteerAngle;
     public DataTable dt;
+    [HideInInspector]
+    public float pre_steer = 0;
+    public float SteerDelta = 5;
     public int Step;
 
-    
+
     public override void Initialize()
     {
         Application.targetFrameRate = FrameRate;
@@ -45,8 +49,6 @@ public class PidCar : Agent
         List<float> t_pos = GetPos();
         m_Car.transform.position = new Vector3(t_pos[0], 0.6f, t_pos[1]);
         m_Car.transform.rotation = Quaternion.Euler(new Vector3(0, t_pos[2], 0));
-        // Debug.Log(Convert.ToString(t_pos[0]));
-        // Debug.Log(Convert.ToString(t_pos[1]));
 
         // Get Next Pos
         t_pos = GetPos();
@@ -58,41 +60,47 @@ public class PidCar : Agent
 
     void FixedUpdate()
     {
-        // Stop Agent
         if (Step >= MaxStep)
         {
-            m_Car.gameObject.SetActive(false);
+            // Stop Agent
+            // m_Car.gameObject.SetActive(false);
+            m_CarRb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotationZ; 
             return;
         }
-        
-        // Get Now Pos
-        Vector3 NowPos = m_Car.transform.position;
-        float now_x = NowPos[0];
-        float now_y = NowPos[2];
+        else{
+            // Get Now Pos
+            Vector3 NowPos = m_Car.transform.position;
+            float now_x = NowPos[0];
+            float now_y = NowPos[2];
 
-        float PosDistance = CalculateEuclideanDistance(now_x, now_y, next_x, next_y);
-        if (PosDistance < MinDistance)
-        {
-            List<float> t_pos = GetPos();
-            next_x = t_pos[0];
-            next_y = t_pos[1];
-            next_yaw = t_pos[2];
+            float PosDistance = CalculateEuclideanDistance(now_x, now_y, next_x, next_y);
+            if (PosDistance < MinDistance)
+            {
+                List<float> t_pos = GetPos();
+                next_x = t_pos[0];
+                next_y = t_pos[1];
+                next_yaw = t_pos[2];
+            }
+
+            // Calculate Cmd
+            List<float> t_cmd = PidCmd();
+            float steer = t_cmd[0];
+            float accel = t_cmd[1];
+
+            // Norm Cmd
+            steer = Mathf.Clamp(steer, pre_steer - SteerDelta, pre_steer + SteerDelta);
+            float NormSteer = steer / MaximumSteerAngle;
+            float NormAccel = accel * -1;
+            pre_steer = steer;
+
+            Debug.Log(Convert.ToString(steer));
+
+            // float steering, float accel, float footbrake, float handbrake
+            // steer (-1, 1)
+            // footbrake (-1, 0)
+            // m_Car.Move(0f, 0f, -0.5f, 0f); 
+            m_Car.Move(NormSteer, 0f, NormAccel, 0f);
         }
-
-        // Calculate Cmd
-        List<float> t_cmd = PidCmd();
-        float steer = t_cmd[0];
-        float accel = t_cmd[1];
-
-        // Norm Cmd
-        float NormSteer = steer / MaximumSteerAngle;
-        float NormAccel = accel * -1;
-
-        // float steering, float accel, float footbrake, float handbrake
-        // steer (-1, 1)
-        // footbrake (-1, 0)
-        // m_Car.Move(0f, 0f, -0.5f, 0f); 
-        m_Car.Move(NormSteer, 0f, NormAccel, 0f);
     }
 
     public List<float> PidCmd()
@@ -111,7 +119,7 @@ public class PidCar : Agent
         }
 
         // calculate accel
-        float accel = 2f * (CarVel - now_vel); 
+        float accel = 0.5f * (CarVel - now_vel); 
 
         // calculate yaw
         float dy = next_yaw - now_yaw;
@@ -123,9 +131,8 @@ public class PidCar : Agent
         {
             dy -= 360;
         }
-        float steer = Pi2Pi(-Math.Atan(4f * dy)) / (float)Math.PI * 180f;
-
-        Debug.Log(Convert.ToString(steer));
+        float steer = Pi2Pi(-Math.Atan(4f * dy / CarVel)) / (float)Math.PI * 180f;
+        steer = Mathf.Clamp(steer, -1 * MaximumSteerAngle, MaximumSteerAngle);
 
         // update pid_cmd
         pid_cmd.Add(steer);
